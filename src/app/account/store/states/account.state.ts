@@ -4,13 +4,14 @@ import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 
 import { TokenPair, User } from '../../models/user';
-import { Login,Logout } from '../actions/account.actions';
+import { Login,GetUsersData,Logout } from '../actions/account.actions';
 import { AccountService } from '../../services/account.service';
 
 export interface AccountStateModel {
   loggedIn: boolean;
   tokens : TokenPair  | null;
   email : string;
+  user : User | null;
 }
 
 @State<AccountStateModel>({
@@ -18,17 +19,22 @@ export interface AccountStateModel {
     defaults: {
       tokens: null,
       loggedIn: false,
-      email : ""
+      email : '',
+      user : null
     }
 })
 
 @Injectable()
 export class AccountState {
   @Selector()
-  static token(state: AccountStateModel): TokenPair | null {
+  static tokens(state: AccountStateModel): TokenPair | null {
     return state.tokens;
   }
-
+  
+  @Selector()
+  static accessToken(state: AccountStateModel): TokenPair | null {
+    return state.tokens;
+  }
   @Selector()
   static isAuthenticated(state: AccountStateModel): boolean {
     return !!state.tokens;
@@ -39,14 +45,18 @@ export class AccountState {
   @Action(Login)
   login(ctx: StateContext<AccountStateModel>, action: Login) {
     return this.authService.login(action.payload).pipe(
-      tap((result => ctx.setState({
-        tokens : result,
-        loggedIn : true,
-        email : action.payload.email  
-      }))
-    ));
+      tap((result => ctx.setState({ tokens : result, loggedIn : true, email : action.payload.email ,user: null }))
+    ));    
   }
-
+  @Action(GetUsersData)
+  getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {
+    
+    const context = ctx.getState();
+    return this.authService.getUsersInfo(context.email).pipe(
+      tap((result => ctx.patchState({ user:result }))
+    ));    
+  }
+ 
   @Action(Logout)
   logout(ctx: StateContext<AccountStateModel>) {
     const state = ctx.getState();
@@ -55,7 +65,8 @@ export class AccountState {
         ctx.setState({
           tokens: null,
           loggedIn: false,
-          email : ""
+          email : "",
+          user : null
         });
       })
     );
