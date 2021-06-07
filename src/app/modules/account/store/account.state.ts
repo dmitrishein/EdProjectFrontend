@@ -3,9 +3,10 @@ import { tap } from 'rxjs/operators'
 import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 
-import { TokenPair, User } from '../../models/user';
-import { Login,GetUsersData,Logout } from '../actions/account.actions';
-import { AccountService } from '../../services/account.service';
+import { TokenPair, User } from '../shared/user';
+import { Login,GetUsersData,Logout, Registration} from './account.actions';
+import { AccountService } from '../shared/account.service';
+import { Router } from '@angular/router';
 
 export interface AccountStateModel {
   loggedIn: boolean;
@@ -26,21 +27,8 @@ export interface AccountStateModel {
 
 @Injectable()
 export class AccountState {
-  @Selector()
-  static tokens(state: AccountStateModel): TokenPair | null {
-    return state.tokens;
-  }
-  
-  @Selector()
-  static accessToken(state: AccountStateModel): TokenPair | null {
-    return state.tokens;
-  }
-  @Selector()
-  static isAuthenticated(state: AccountStateModel): boolean {
-    return !!state.tokens;
-  }
-
-  constructor(private authService: AccountService) {}
+ 
+  constructor(private authService: AccountService, private router: Router) {}
 
   @Action(Login)
   login(ctx: StateContext<AccountStateModel>, action: Login) {
@@ -48,12 +36,21 @@ export class AccountState {
       tap((result => ctx.setState({ tokens : result, loggedIn : true, email : action.payload.email ,user: null }))
     ));    
   }
+  // @Action(TokenChange)
+  // tokenChange(ctx: StateContext<AccountStateModel>, action: TokenChange) {
+  //   const context = ctx.getState();
+  //   return this.authService.changeToken(action.user).pipe(
+  //     tap((result => ctx.patchState({ tokens : result, loggedIn : true}))
+  //   ));    
+  // }
   @Action(GetUsersData)
-  getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {
-    
+  getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {   
     const context = ctx.getState();
     return this.authService.getUsersInfo(context.email).pipe(
-      tap((result => ctx.patchState({ user:result }))
+      tap((result => {
+        ctx.patchState({ user:result }),
+        this.router.navigate(['/']).then(()=> window.location.reload());
+      }),
     ));    
   }
  
@@ -67,9 +64,13 @@ export class AccountState {
           loggedIn: false,
           email : "",
           user : null
-        });
-      })
+        }),
+        this.router.navigate(['/']).then(()=>window.location.reload());
+      }),
+      
     );
+
+    
   }
   
 }

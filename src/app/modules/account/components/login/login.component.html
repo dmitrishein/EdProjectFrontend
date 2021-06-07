@@ -7,18 +7,18 @@
       <input type="email" matInput placeholder="Email" formControlName="email">
     </mat-form-field>
   </p>
-
   <p>
     <mat-form-field>
       <input type="password" matInput placeholder="Password" formControlName="password">
     </mat-form-field>
   </p>
+  <p>
+    {{errorMessage}}
+  </p>
   <div class="log-button">
     <button type="submit" mat-button>Login</button>
   </div>
 </form>
-<div class="log-button">
-  <button (click)="logout()" mat-button>Logout</button>
-</div>
+
 </mat-card-content>
 </mat-card>

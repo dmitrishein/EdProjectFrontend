@@ -2,7 +2,6 @@ import {Injectable } from '@angular/core'
 import { Store } from '@ngxs/store';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { stringify } from '@angular/compiler/src/util';
 
 @Injectable()
 
@@ -20,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
             req = req.clone({
             headers: req.headers.set('authorization', "Bearer " + accessToken)
         });
-    }
+        }
         return next.handle(req);
     }
 }

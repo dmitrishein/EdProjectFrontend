@@ -1,0 +1,9 @@
+<p>
+    <mat-toolbar>
+      <button class="logo" routerLink="/">Book Store</button>
+      <span class="spacer"></span>
+      <button  class="fancy-button" *ngIf="!isLoggedIn$" routerLink="/login" > Login</button>
+      <button  class="fancy-button" *ngIf="!isLoggedIn$" routerLink="/registration" > Sign Up</button>          
+      <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$" routerLink="/" >Logout</button>
+    </mat-toolbar>
+</p>

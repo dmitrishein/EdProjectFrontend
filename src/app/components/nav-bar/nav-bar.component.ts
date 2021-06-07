@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { Logout } from '../../modules/account/store/account.actions';
 
 @Component({
   selector: 'app-nav-bar',
@@ -18,4 +19,8 @@ export class NavBarComponent implements OnInit {
    console.log(this.isLoggedIn$);
   }
 
+  logout()
+  {
+    this._store.dispatch(new Logout());
+  }
 }
