@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { EmailConfirmationComponent } from './modules/account/components/email-confirmation/email-confirmation.component';
 import { LoginComponent } from './modules/account/components/login/login.component';
 import { RegisterComponent } from './modules/account/components/register/register.component';
 import { EditionEditComponent } from './modules/edition/components/edition-edit/edition-edit.component';
@@ -10,10 +11,11 @@ const routes: Routes = [];
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      { path: '', component: EditionListComponent },
+      { path: '',canActivate:[AuthGuard],component: EditionListComponent },
       { path: 'login', component: LoginComponent },
       { path: 'registration', component: RegisterComponent },
-      { path: 'edition',canActivate:[AuthGuard], component : EditionEditComponent}
+      { path: 'edition',canActivate:[AuthGuard], component : EditionEditComponent},
+      { path: 'emailconfirmation',component: EmailConfirmationComponent}
     ])
   ],
   exports: [RouterModule]

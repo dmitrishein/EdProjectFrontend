@@ -10,6 +10,10 @@ export interface Authenticate {
     email : string;
     password : string;
 }
+export interface ChangeToken {
+    email: string;
+    refreshToken: string;
+}
 
 export interface TokenPair{
     accessToken : string;

@@ -4,7 +4,7 @@ import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 
 import { TokenPair, User } from '../shared/user';
-import { Login,GetUsersData,Logout, Registration} from './account.actions';
+import { Login,GetUsersData,Logout, Registration, TokenRefresh} from './account.actions';
 import { AccountService } from '../shared/account.service';
 import { Router } from '@angular/router';
 
@@ -32,17 +32,27 @@ export class AccountState {
 
   @Action(Login)
   login(ctx: StateContext<AccountStateModel>, action: Login) {
+    
     return this.authService.login(action.payload).pipe(
-      tap((result => ctx.setState({ tokens : result, loggedIn : true, email : action.payload.email ,user: null }))
-    ));    
+      tap((result) => { 
+        ctx.setState({ tokens : result, loggedIn : true, email : action.payload.email ,user: null }),
+        localStorage.setItem("refreshToken", result.refreshToken);
+      }
+     )
+    );    
   }
-  // @Action(TokenChange)
-  // tokenChange(ctx: StateContext<AccountStateModel>, action: TokenChange) {
-  //   const context = ctx.getState();
-  //   return this.authService.changeToken(action.user).pipe(
-  //     tap((result => ctx.patchState({ tokens : result, loggedIn : true}))
-  //   ));    
-  // }
+  @Action(TokenRefresh)
+  tokenRefresh(ctx: StateContext<AccountStateModel>, action: TokenRefresh) {
+    const refreshToken = localStorage.getItem("refreshToken")!;
+
+    return this.authService.refreshToken(refreshToken).pipe(
+      tap((result) => 
+          {ctx.patchState({ tokens : result, loggedIn : true}),
+          localStorage.setItem("refreshToken",result.refreshToken);
+        }
+      )
+    );    
+  }
   @Action(GetUsersData)
   getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {   
     const context = ctx.getState();
@@ -53,7 +63,6 @@ export class AccountState {
       }),
     ));    
   }
- 
   @Action(Logout)
   logout(ctx: StateContext<AccountStateModel>) {
     const state = ctx.getState();

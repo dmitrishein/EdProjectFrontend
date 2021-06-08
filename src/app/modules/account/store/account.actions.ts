@@ -1,4 +1,4 @@
-import { Authenticate, RegisterUser, User } from '../shared/user';
+import { Authenticate, RegisterUser } from '../shared/user';
 
 export class Registration {
     static readonly type = '[Account] Regisration';
@@ -9,10 +9,9 @@ export class Login {
     static readonly type = '[Account] Login';
     constructor(public payload: Authenticate) {}
 }
-// export class TokenChange {
-//     static readonly type = '[Account] TokenChange';
-//     constructor(public user:User) {}
-// }
+export class TokenRefresh {
+    static readonly type = '[Account] TokensRefresh';
+}
 export class Logout {
     static readonly type = '[Account] Logout';
 }

@@ -36,8 +36,6 @@ export class LoginComponent implements OnInit {
         this.store.dispatch(new GetUsersData())
       },
       (error) => {
-        console.error(error.error);
-        
         this.errorMessage = error.error;
       }
         
