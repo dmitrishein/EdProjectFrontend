@@ -6,6 +6,12 @@ export interface RegisterUser {
     password: string,  
     confirmPassword: string,
 }
+
+export interface ChangePassword {
+    email : string;
+    token : string;
+    newPassword :string;
+}
 export interface Authenticate {
     email : string;
     password : string;
@@ -25,4 +31,5 @@ export interface User{
     fullName : string;
     email : string;
     IsEmailConfirmed : boolean;
+    username : string;
 }

@@ -21,10 +21,10 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.status === 401) {
             this.store.dispatch(new TokenRefresh());
           }
-          if(error.status === 400) {
+          if(error.status === 403) {
              this.store.dispatch(new Logout()); 
           }
-          return EMPTY;
+          return throwError(error);
         }
       )
     )

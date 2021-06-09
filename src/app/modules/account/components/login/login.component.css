@@ -11,7 +11,11 @@
     display: flex;
     justify-content: center;
 }
-
+.resbut{
+    margin-top: 10.15em;
+    margin-right: 50%;
+   position: absolute;
+}
 .log-button{
     display: flex;
     justify-content: flex-end;

@@ -12,13 +12,13 @@
       <input type="password" matInput placeholder="Password" formControlName="password">
     </mat-form-field>
   </p>
-  <p>
+  <p *ngIf=(errorMessage) class="error">
     {{errorMessage}}
   </p>
   <div class="log-button">
-    <button type="submit" mat-button>Login</button>
-  </div>
+    <button type="submit" mat-button>Log in</button>
+  </div> 
 </form>
-
+<button class="resbut" routerLink="/resetpassword">Forgot password?</button>
 </mat-card-content>
 </mat-card>

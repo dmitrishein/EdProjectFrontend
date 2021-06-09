@@ -1,1 +1,12 @@
-<p>email-confirmation works!</p>
+<mat-card >
+   <div *ngIf="showError">
+
+      <img src="https://www.suunto.com/contentassets/ff74ccabe951460d963b381982af06c7/icon-failure.png" alt="Confirmation Failed" style="width:256px;height: 256px;">
+      <p>{{errorMessage}}</p>
+   </div>
+
+    <div *ngIf="showSuccess">
+      <img src="https://ru.opensuse.org/images/4/4f/Icon-checked.png" alt="Confirmation Successed">
+       <p>Your email has been successfully confirmed!</p>
+    </div>
+</mat-card>
