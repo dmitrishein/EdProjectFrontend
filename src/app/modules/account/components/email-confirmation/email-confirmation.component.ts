@@ -1,10 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { AccountService } from '../../shared/account.service';
+import { AccountService } from '../../../../shared/services/account.service';
 
 @Component({
   selector: 'app-email-confirmation',

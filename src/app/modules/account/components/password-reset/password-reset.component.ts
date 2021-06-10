@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { AccountService } from '../../shared/account.service';
+import { AccountService } from '../../../../shared/services/account.service';
 
 @Component({
   selector: 'app-password-reset',

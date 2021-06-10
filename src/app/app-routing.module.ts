@@ -4,20 +4,23 @@ import { EmailConfirmationComponent } from './modules/account/components/email-c
 import { LoginComponent } from './modules/account/components/login/login.component';
 import { PasswordResetComponent } from './modules/account/components/password-reset/password-reset.component';
 import { RegisterComponent } from './modules/account/components/register/register.component';
+import { EditionDetailComponent } from './modules/edition/components/edition-detail/edition-detail.component';
 import { EditionEditComponent } from './modules/edition/components/edition-edit/edition-edit.component';
 import { EditionListComponent } from './modules/edition/components/edition-list/edition-list.component';
-import { AuthGuard } from './shared/auth.guard';
-const routes: Routes = [];
+import { UserProfileComponent } from './modules/user/components/user-profile/user-profile.component';
+import { AuthGuard } from './shared/services/auth.guard';
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      { path: '',canActivate:[AuthGuard],component: EditionListComponent },
+      { path: '',component: EditionListComponent },
       { path: 'login', component: LoginComponent },
       { path: 'registration', component: RegisterComponent },
       { path: 'edition',canActivate:[AuthGuard], component : EditionEditComponent},
-      { path: 'emailconfirmation',component: EmailConfirmationComponent},
-      { path: 'resetpassword',component: PasswordResetComponent},
+      { path: 'emailconfirmation', component: EmailConfirmationComponent},
+      { path: 'resetpassword', component: PasswordResetComponent},
+      { path: 'profile', canActivate:[AuthGuard], component: UserProfileComponent},
+      { path: 'detail/:id', component: EditionDetailComponent}
     ])
   ],
   exports: [RouterModule]

@@ -3,10 +3,11 @@ import { tap } from 'rxjs/operators'
 import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 
-import { TokenPair, User } from '../shared/user';
-import { Login,GetUsersData,Logout, Registration, TokenRefresh} from './account.actions';
-import { AccountService } from '../shared/account.service';
+import { TokenPair, User } from '../../shared/models/user';
+import { Login,GetUsersData,Logout, Registration, TokenRefresh, UpdateUserData} from '../actions/account.actions';
+import { AccountService } from '../../shared/services/account.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../shared/services/user.service';
 
 export interface AccountStateModel {
   loggedIn: boolean;
@@ -28,7 +29,7 @@ export interface AccountStateModel {
 @Injectable()
 export class AccountState {
  
-  constructor(private authService: AccountService, private router: Router) {}
+  constructor(private authService: AccountService,private userService : UserService, private router: Router) {}
 
   @Action(Login)
   login(ctx: StateContext<AccountStateModel>, action: Login) {
@@ -56,16 +57,22 @@ export class AccountState {
   @Action(GetUsersData)
   getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {   
     const context = ctx.getState();
-    return this.authService.getUsersInfo(context.email).pipe(
+    return this.userService.getUsersInfo(context.email).pipe(
       tap((result => {
-        ctx.patchState({ user:result }),
-        this.router.navigate(['/']).then(()=> window.location.reload());
+        ctx.patchState({ user:result })
+        // this.router.navigate(['/']).then(()=> window.location.reload());
       }),
     ));    
   }
+  @Action(UpdateUserData)
+  updateUserData(ctx: StateContext<AccountStateModel>, action: UpdateUserData) {  
+    return this.userService.updateUser(action.payload).subscribe(
+      () =>{ ctx.dispatch(new GetUsersData)}
+    );    
+  }
+
   @Action(Logout)
   logout(ctx: StateContext<AccountStateModel>) {
-    const state = ctx.getState();
     return this.authService.logout().pipe(
       tap(() => {
         ctx.setState({

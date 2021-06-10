@@ -12,3 +12,8 @@ mat-toolbar {
    background-color: white;
    color: #1976d2;
 }
+
+.usertag {
+    padding-right: 10px;
+    color: white;
+}

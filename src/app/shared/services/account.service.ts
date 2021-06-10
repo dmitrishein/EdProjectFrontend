@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Authenticate, RegisterUser, TokenPair, User } from './user';
-import { HttpClient, HttpParams} from '@angular/common/http';
+import { Authenticate, RegisterUser, TokenPair, User } from '../models/user';
+import { HttpClient} from '@angular/common/http';
 
 
 
@@ -38,8 +38,5 @@ export class AccountService {
     return this.http.post('https://localhost:44386/Account/Logout',"");
   }
   
-  getUsersInfo(email : string) : Observable<User> {
-      return this.http.get<User>('https://localhost:44386/User/GetUserByQuery?searchString='+email);
-  }
   constructor(private http:HttpClient) { }
 }

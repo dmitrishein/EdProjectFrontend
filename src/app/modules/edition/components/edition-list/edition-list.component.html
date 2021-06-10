@@ -1,10 +1,10 @@
-<mat-grid-list cols="4" rowHeight="1:1.4">
-    <mat-grid-tile *ngFor="let edition of editionList | async">
+<mat-grid-list cols="4" rowHeight="1:1.6">
+    <mat-grid-tile *ngFor="let edition of editionList | async" routerLink="/detail/{{edition.id}}">
       <mat-card class="card">
           <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>{{edition.title}}</mat-card-title>
-            <mat-card-subtitle>{{edition.description}}</mat-card-subtitle>
+            <mat-card-subtitle>{{edition.authors[0].name}}</mat-card-subtitle>
           </mat-card-header>
           <img src="https://img.icons8.com/emoji/452/closed-book.png" alt="edition">
           <mat-card-content>

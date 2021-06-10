@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, tap} from 'rxjs/operators';
-import { Logout, TokenRefresh } from '../modules/account/store/account.actions';
+import { Logout, TokenRefresh } from '../../store/actions/account.actions';
 import { Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
 

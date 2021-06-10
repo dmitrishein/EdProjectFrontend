@@ -1,0 +1,41 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{user$.fullName}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <p>Personal Data</p>
+        <form [formGroup]="userForm" (ngSubmit) = "updateForm()" >
+            <p>
+                <mat-form-field>
+                  <input matInput placeholder="Username"  formControlName="username">
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field>
+                  <input matInput placeholder="First Name" formControlName="firstName">
+                </mat-form-field>
+            </p>
+          <p>
+                <mat-form-field>
+                  <input matInput placeholder="Last Name" formControlName="lastName">
+                </mat-form-field>
+          </p>  
+          <p>
+            <mat-form-field>
+              <input type="email" matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+          </p>
+          <p>Email confirmation status : {{user$.IsEmailConfirmed}}</p>
+          <p>
+             {{errorMessage}}
+          </p>
+          <div class="log-button" *ngIf = "dataEditEnable">
+            <button type="submit" mat-button>Done</button>
+          </div>
+        </form>
+        <div>
+            <button (click)="editEnable()" *ngIf = "!dataEditEnable" mat-button>Edit personal data</button>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -6,4 +6,10 @@ export interface Edition {
     currency : string;
     status : string;
     type : string; 
+    authors : Author[];
+}
+
+export interface Author {
+    id:number;
+    name:string;
 }

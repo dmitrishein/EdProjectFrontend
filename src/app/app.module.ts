@@ -1,16 +1,18 @@
 import { NgxsModule} from '@ngxs/store';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
-import { AccountState } from './modules/account/store/account.state';
+import { AccountState } from './store/states/account.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AccountModule } from './modules/account/account.module';
 import { EditionModule } from './modules/edition/edition.module';
+import { UserModule } from './modules/user/user.module';
 
 
 import { MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -18,8 +20,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './shared/token.interceptor';
-import { AuthInterceptor } from './shared/auth.interceptor';
+import { TokenInterceptor } from './shared/services/token.interceptor';
+import { AuthInterceptor } from './shared/services/auth.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -36,9 +39,11 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     NgxsLoggerPluginModule.forRoot(),
     AccountModule,
     EditionModule,
+    UserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatIconModule
   ],
   
   providers: [

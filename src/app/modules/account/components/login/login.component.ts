@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { GetUsersData, Login, Logout } from '../../store/account.actions';
+import { GetUsersData, Login, Logout } from '../../../../store/actions/account.actions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,7 +33,9 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new Login(this.loginForm.value))
     .subscribe(
       () => {
-        this.store.dispatch(new GetUsersData())
+        this.store.dispatch(new GetUsersData()).subscribe(
+          () => {window.location.reload()}
+        )
       },
       (error) => {
         this.errorMessage = error.error;

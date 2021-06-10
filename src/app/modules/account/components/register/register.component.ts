@@ -3,7 +3,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { AccountService } from '../../shared/account.service';
+import { AccountService } from '../../../../shared/services/account.service';
 
 @Component({
   selector: 'app-register',
