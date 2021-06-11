@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
+
 
 import { TokenPair, User } from '../../shared/models/user';
-import { Login,GetUsersData,Logout, Registration, TokenRefresh, UpdateUserData} from '../actions/account.actions';
+import { Login,GetUsersData,Logout, Registration, TokenRefresh, UpdateUserData, ConfirmEmail} from '../actions/account.actions';
 import { AccountService } from '../../shared/services/account.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
+import { throwError } from 'rxjs';
 
 export interface AccountStateModel {
   loggedIn: boolean;
@@ -54,13 +55,13 @@ export class AccountState {
       )
     );    
   }
+  
   @Action(GetUsersData)
   getUserData(ctx: StateContext<AccountStateModel>, action: GetUsersData) {   
     const context = ctx.getState();
     return this.userService.getUsersInfo(context.email).pipe(
       tap((result => {
         ctx.patchState({ user:result })
-        // this.router.navigate(['/']).then(()=> window.location.reload());
       }),
     ));    
   }
@@ -81,12 +82,21 @@ export class AccountState {
           email : "",
           user : null
         }),
-        this.router.navigate(['/']).then(()=>window.location.reload());
+        localStorage.removeItem("refreshToken");
+        this.router.navigate(['/']);
       }),
-      
     );
 
     
   }
   
+  @Action(ConfirmEmail)
+  confirmEmail(ctx: StateContext<AccountStateModel>,action:ConfirmEmail){
+    this.authService.confirmEmail(action.token,action.email).subscribe(
+      () => {},
+      (err) => {
+        throwError(err.error);
+      }
+    )
+  }
 }

@@ -39,6 +39,7 @@ export class UserProfileComponent implements OnInit {
     this.userForm.enable();
     this.dataEditEnable = true;
   }
+  
   updateForm(){
     if(this.userForm.dirty){
         this.store.dispatch(new UpdateUserData(this.userForm.value)).subscribe(

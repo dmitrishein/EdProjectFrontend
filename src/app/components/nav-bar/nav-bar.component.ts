@@ -11,19 +11,14 @@ import { Logout } from '../../store/actions/account.actions';
 })
 export class NavBarComponent implements OnInit {
 
-  isLoggedIn$!: Observable<boolean>;
-  username:string = "";
+  isLoggedIn$ = this._store.select(ourState => ourState.account.loggedIn);
+  user$ = this._store.selectSnapshot(our => our.account.user);
   constructor(private _store : Store) { }
-  
+
   ngOnInit(): void {
-   this.isLoggedIn$ = this._store.selectSnapshot(ourState => ourState.account.loggedIn);
-   let user$ = this._store.selectSnapshot(our => our.account.user);
-   user$ = JSON.parse(JSON.stringify(user$));
-   this.username = user$[0].username;
   }
 
-  logout()
-  {
+  logout() {
     this._store.dispatch(new Logout());
   }
 }

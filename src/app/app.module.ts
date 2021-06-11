@@ -4,6 +4,7 @@ import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import { AccountState } from './store/states/account.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AccountModule } from './modules/account/account.module';
@@ -20,8 +21,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './shared/services/token.interceptor';
-import { AuthInterceptor } from './shared/services/auth.interceptor';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import { AuthInterceptor } from './shared/services/auth.interceptor';
     MatToolbarModule,
     MatIconModule
   ],
-  
+  exports: [
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

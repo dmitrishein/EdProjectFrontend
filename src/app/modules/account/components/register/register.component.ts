@@ -26,10 +26,6 @@ export class RegisterComponent implements OnInit {
   constructor(private accService : AccountService, private router : Router, private store : Store) { }
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.store.selectSnapshot(ourState => ourState.account.loggedIn);
-    if(this.isLoggedIn$){
-      this.router.navigate(['/']);
-    }
   }
 
   registration()

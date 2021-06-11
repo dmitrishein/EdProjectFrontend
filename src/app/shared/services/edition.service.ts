@@ -12,7 +12,7 @@ export class EditionService {
       'https://localhost:44386/Edition/GetEditions'
     );
   }
-  getEdition(id : number)  {
+  getEdition(id : number) {
     return this.http.get<Edition>('https://localhost:44386/Edition/GetEditionById?Id='+id);
   }
   constructor(private http:HttpClient) { }

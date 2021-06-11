@@ -2,13 +2,13 @@
     <mat-toolbar>
       <button class="logo" routerLink="/">Book Store</button>
       <span class="spacer"></span>
-      <button  class="fancy-button" *ngIf="!isLoggedIn$" routerLink="/login" > Login</button>
-      <button  class="fancy-button" *ngIf="!isLoggedIn$" routerLink="/registration" > Sign Up</button>
-      <div class="usertag" *ngIf="isLoggedIn$" > Hello, {{username}}! </div> 
-      <button   class="fancy-button" *ngIf="isLoggedIn$" routerLink="/profile" > Account
+      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/login" > Login</button>
+      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/registration" > Sign Up</button>
+      <div class="usertag" *ngIf="isLoggedIn$ | async " > Hello, {{user$[0].username}}! </div> 
+      <button   class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/profile" > Account
         <mat-icon>account_circle</mat-icon>
       </button>         
-      <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$" routerLink="/" >Logout
+      <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/" >Logout
         <mat-icon>exit_to_app</mat-icon>
       </button>
     

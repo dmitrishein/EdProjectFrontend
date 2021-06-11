@@ -15,17 +15,13 @@ export class LoginComponent implements OnInit {
   errorMessage : string = "";
   
   loginForm: FormGroup = new FormGroup(
-   {
+  {
       email: new FormControl('',[Validators.required,Validators.email]), 
       password: new FormControl('',[Validators.required]),
   });
 
-  constructor(private store : Store, private router:Router) { }
+  constructor(private store : Store) { }
   ngOnInit(): void {
-    this.isLoggedIn$ = this.store.selectSnapshot(ourState => ourState.account.loggedIn);
-    if(this.isLoggedIn$){
-      this.router.navigate(['/']);
-    }
   }
 
   login()
@@ -33,14 +29,11 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new Login(this.loginForm.value))
     .subscribe(
       () => {
-        this.store.dispatch(new GetUsersData()).subscribe(
-          () => {window.location.reload()}
-        )
+        this.store.dispatch(new GetUsersData());
       },
       (error) => {
-        this.errorMessage = error.error;
-      }
-        
-     );
+        alert(error.error);
+      } 
+    );
   }  
 }

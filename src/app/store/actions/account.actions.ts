@@ -22,3 +22,18 @@ export class Logout {
 export class GetUsersData {
     static readonly type = '[Account] Get User';
 }
+
+export class ConfirmEmail {
+    static readonly type = '[Account] Confirm Email';
+    constructor(public token:string,public email:string){}
+}
+
+export class ResetPassword {
+    static readonly type = '[Account] Reset Password';
+    constructor(public email:string){}
+}
+
+export class ChangePassword {
+    static readonly type = '[Account] Change Password';
+    constructor(public email:string, public token:string, public newPassword : string){}
+}

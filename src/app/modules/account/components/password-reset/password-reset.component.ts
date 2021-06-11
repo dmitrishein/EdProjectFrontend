@@ -12,23 +12,18 @@ import { AccountService } from '../../../../shared/services/account.service';
 export class PasswordResetComponent implements OnInit {
   isTokenSended !: boolean;
   errorMessage : string = "";
-  private isLoggedIn$!:boolean;
   constructor(private accountService : AccountService, private route : ActivatedRoute,private store : Store, private router : Router) {
     this.isTokenSended = false;
    }
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.store.selectSnapshot(ourState => ourState.account.loggedIn);
-    if(this.isLoggedIn$){
-      this.router.navigate(['/']);
-    }
     if(this.route.snapshot.queryParams['token']){
      this.isTokenSended = true;
     }
   }
 
   resetPassword(email:string){
-    console.log(email);
+    this.store.dispatch;
     this.accountService.resetPass(email).subscribe(
       () => { this.errorMessage = "Message with link was succesfully send"},
       (err) => {this.errorMessage = err.error}

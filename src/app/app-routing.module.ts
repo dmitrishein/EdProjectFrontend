@@ -8,16 +8,17 @@ import { EditionDetailComponent } from './modules/edition/components/edition-det
 import { EditionEditComponent } from './modules/edition/components/edition-edit/edition-edit.component';
 import { EditionListComponent } from './modules/edition/components/edition-list/edition-list.component';
 import { UserProfileComponent } from './modules/user/components/user-profile/user-profile.component';
-import { AuthGuard } from './shared/services/auth.guard';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { UserGuard } from './shared/guards/user.guard';
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
       { path: '',component: EditionListComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'registration', component: RegisterComponent },
+      { path: 'login',canActivate:[UserGuard], component: LoginComponent },
+      { path: 'registration', canActivate:[UserGuard],component: RegisterComponent },
       { path: 'edition',canActivate:[AuthGuard], component : EditionEditComponent},
-      { path: 'emailconfirmation', component: EmailConfirmationComponent},
+      { path: 'emailconfirmation', canActivate:[UserGuard],component: EmailConfirmationComponent},
       { path: 'resetpassword', component: PasswordResetComponent},
       { path: 'profile', canActivate:[AuthGuard], component: UserProfileComponent},
       { path: 'detail/:id', component: EditionDetailComponent}

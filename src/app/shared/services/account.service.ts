@@ -14,8 +14,7 @@ export class AccountService {
   register(regUser: RegisterUser){
     return this.http.post('https://localhost:44386/Account/Registration',regUser);
   }
-  confirmEmail(encodeToken : string , email : string ){
-    const token = encodeToken.split(' ').join('+');
+  confirmEmail(token : string , email : string ){
     return this.http.post('https://localhost:44386/Account/ConfirmEmail',{token,email});
   }
   login(loginUser: Authenticate) : Observable<TokenPair> {
