@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new Login(this.loginForm.value))
     .subscribe(
       () => {
-        this.store.dispatch(new GetUsersData());
       },
       (error) => {
         alert(error.error);

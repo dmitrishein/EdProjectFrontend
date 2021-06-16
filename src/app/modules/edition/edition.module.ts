@@ -6,18 +6,22 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule} from '@angular/material/card';
 import { EditionEditComponent } from './components/edition-edit/edition-edit.component';
 import { EditionDetailComponent } from './components/edition-detail/edition-detail.component';
+import { EditionPageComponent } from './components/edition-page/edition-page.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
   declarations: [
     EditionListComponent,
     EditionEditComponent,
-    EditionDetailComponent
+    EditionDetailComponent,
+    EditionPageComponent
   ],
   imports: [
     CommonModule,
     MatGridListModule,
     MatCardModule,
+    MatPaginatorModule,
     RouterModule
   ]
 })

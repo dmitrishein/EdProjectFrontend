@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Edition } from 'src/app/shared/models/edition';
+import { Store } from '@ngxs/store';
+import { Edition} from '../../../../shared/models/edition'
+import { EditionState} from 'src/app/store/states/edition.state';
 import { EditionService } from 'src/app/shared/services/edition.service';
+
 
 @Component({
   selector: 'app-edition-detail',
@@ -11,31 +12,19 @@ import { EditionService } from 'src/app/shared/services/edition.service';
   styleUrls: ['./edition-detail.component.css']
 })
 export class EditionDetailComponent implements OnInit {
-  edition !: Edition;
+  selectedEdition$!: Edition;
 
-
-  constructor(private route : ActivatedRoute, private editionService : EditionService) { }
+  constructor(private route : ActivatedRoute, private store:Store,private editionService : EditionService) { }
 
   ngOnInit(): void {
-    this.getEdition();
+     this.getEdition();
   }
 
   getEdition(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.editionService.getEdition(id).subscribe((edit:Edition)=>{
-      this.edition = {
-        id: edit.id,
-        title: edit.title,
-        description: edit.description,
-        price : edit.price,
-        status : edit.status,
-        currency : edit.currency,
-        type: edit.type,
-        authors: edit.authors
-      },
-      console.log(this.edition);
-    }
-    );
+    this.store.select(EditionState.getEditionById).subscribe(
+      (res)=>{this.selectedEdition$ = res(id);console.log(this.selectedEdition$)}
+    )
   }
 
 }

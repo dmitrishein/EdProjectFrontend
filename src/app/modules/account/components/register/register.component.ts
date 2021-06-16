@@ -3,6 +3,7 @@ import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { Registration } from 'src/app/store/actions/account.actions';
 import { AccountService } from '../../../../shared/services/account.service';
 
 @Component({
@@ -30,15 +31,7 @@ export class RegisterComponent implements OnInit {
 
   registration()
   {
-    this.accService.register(this.registerForm.value).subscribe( 
-      () =>{ 
-        this.registerForm.reset();
-        this.registerForm.clearValidators();
-        this.errorMessage = "Registration successful!";
-      },
-      (error) => {
-          this.errorMessage = error.error;
-      }
-    );
+    this.store.dispatch(new Registration(this.registerForm.value));
+
   }  
 }

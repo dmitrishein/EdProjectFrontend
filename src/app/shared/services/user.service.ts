@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../models/user';
+import { UpdateUserModel, User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -10,10 +10,10 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
   getUsersInfo(email : string) : Observable<User> {
-    return this.http.get<User>('https://localhost:44386/User/GetUserByQuery?searchString='+email);
+    return this.http.get<User>('https://localhost:44386/User/GetUserByEmail?searchString='+email);
   }
 
-  updateUser(user : User) { 
+  updateUser(user : UpdateUserModel) { 
     return this.http.post('https://localhost:44386/User/UpdateUser',user);
   }
   constructor(private http:HttpClient) { }

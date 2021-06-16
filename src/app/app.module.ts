@@ -23,6 +23,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { EditionState } from './store/states/edition.state';
 
 
 
@@ -33,9 +34,9 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
   ],
   imports: [
     BrowserModule,
-    NgxsModule.forRoot([AccountState]),
+    NgxsModule.forRoot([AccountState,EditionState]),
     NgxsStoragePluginModule.forRoot({
-      key: AccountState
+      key:[AccountState, EditionState],
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),

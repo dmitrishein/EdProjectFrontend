@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { ChangePassword, ResetPassword } from 'src/app/store/actions/account.actions';
 import { AccountService } from '../../../../shared/services/account.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { AccountService } from '../../../../shared/services/account.service';
 export class PasswordResetComponent implements OnInit {
   isTokenSended !: boolean;
   errorMessage : string = "";
-  constructor(private accountService : AccountService, private route : ActivatedRoute,private store : Store, private router : Router) {
+  constructor(private route : ActivatedRoute,private store : Store, private router : Router) {
     this.isTokenSended = false;
    }
 
@@ -23,19 +24,11 @@ export class PasswordResetComponent implements OnInit {
   }
 
   resetPassword(email:string){
-    this.store.dispatch;
-    this.accountService.resetPass(email).subscribe(
-      () => { this.errorMessage = "Message with link was succesfully send"},
-      (err) => {this.errorMessage = err.error}
-    );
+    this.store.dispatch(new ResetPassword(email));
   }
   changePassword(newPassword:string){
     const token = this.route.snapshot.queryParams['token'];
     const email = this.route.snapshot.queryParams['email'];
-   
-    this.accountService.changePass(email,token,newPassword).subscribe(
-      () => {this.errorMessage = "Password was successfuly changed. Press login button to continue"},
-      (err) => {this.errorMessage = err.error}
-    )
+    this.store.dispatch(new ChangePassword(email,token,newPassword));
   }
 }

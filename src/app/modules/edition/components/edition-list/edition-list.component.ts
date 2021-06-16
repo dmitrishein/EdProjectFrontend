@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { GetEditionList } from 'src/app/store/actions/edition.action';
 import { Edition } from '../../../../shared/models/edition';
-import { EditionService } from '../../../../shared/services/edition.service';
 
 @Component({
   selector: 'app-edition-list',
@@ -10,17 +12,11 @@ import { EditionService } from '../../../../shared/services/edition.service';
 })
 export class EditionListComponent implements OnInit {
 
-  editionList : Observable<Edition[]>;
-  selectedEdition?: Edition;
+  editionList:Observable<Edition[]> = this.store.select(ourState=>ourState.edition.edition); 
 
-  constructor(private editionService : EditionService) { 
-    this.editionList =  this.editionService.getEditionList();
+  constructor(private store : Store) { 
   }
 
   ngOnInit(): void {
-  }
-
-  onSelect(edition:Edition) : void {
-    this.selectedEdition = edition;
   }
 }
