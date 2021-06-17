@@ -14,7 +14,7 @@ import { EditionService } from 'src/app/shared/services/edition.service';
 export class EditionDetailComponent implements OnInit {
   selectedEdition$!: Edition;
 
-  constructor(private route : ActivatedRoute, private store:Store,private editionService : EditionService) { }
+  constructor(private route : ActivatedRoute, private store:Store) { }
 
   ngOnInit(): void {
      this.getEdition();
@@ -23,7 +23,7 @@ export class EditionDetailComponent implements OnInit {
   getEdition(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.store.select(EditionState.getEditionById).subscribe(
-      (res)=>{this.selectedEdition$ = res(id);console.log(this.selectedEdition$)}
+      (res)=>{this.selectedEdition$ = res(id)!}
     )
   }
 

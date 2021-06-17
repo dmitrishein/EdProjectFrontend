@@ -8,6 +8,8 @@ import { EditionEditComponent } from './components/edition-edit/edition-edit.com
 import { EditionDetailComponent } from './components/edition-detail/edition-detail.component';
 import { EditionPageComponent } from './components/edition-page/edition-page.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { JwPaginationModule } from 'jw-angular-pagination';
 
 
 @NgModule({
@@ -19,9 +21,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
   ],
   imports: [
     CommonModule,
+    JwPaginationModule,
     MatGridListModule,
     MatCardModule,
     MatPaginatorModule,
+    NgxPaginationModule,
     RouterModule
   ]
 })

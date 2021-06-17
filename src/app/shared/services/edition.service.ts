@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Edition } from '../models/edition';
+import { Edition, EditionPageResponseModel } from '../models/edition';
+import { EditionPageParameters } from '../models/edition';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,6 +12,12 @@ export class EditionService {
   getEditionList(){
     return this.http.get<Edition[]>(
       'https://localhost:44386/Edition/GetEditions'
+    );
+  }
+
+  getEditionPage( pageParams : EditionPageParameters  ){
+    return this.http.post<EditionPageResponseModel>(
+      'https://localhost:44386/Edition/GetEditionPage', pageParams
     );
   }
   getEdition(id : number) {

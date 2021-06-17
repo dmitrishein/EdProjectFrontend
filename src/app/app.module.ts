@@ -14,6 +14,7 @@ import { UserModule } from './modules/user/user.module';
 
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -24,6 +25,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { EditionState } from './store/states/edition.state';
+import { JwPaginationModule } from 'jw-angular-pagination';
 
 
 
@@ -40,13 +42,15 @@ import { EditionState } from './store/states/edition.state';
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
+    NgxPaginationModule,
     AccountModule,
     EditionModule,
     UserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    JwPaginationModule
   ],
   exports: [
   ],
