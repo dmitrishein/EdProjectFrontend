@@ -10,7 +10,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AccountModule } from './modules/account/account.module';
 import { EditionModule } from './modules/edition/edition.module';
 import { UserModule } from './modules/user/user.module';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -46,6 +48,9 @@ import { JwPaginationModule } from 'jw-angular-pagination';
     AccountModule,
     EditionModule,
     UserModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,

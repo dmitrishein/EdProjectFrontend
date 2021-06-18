@@ -1,13 +1,49 @@
+<div class="">
+  Items per Page:
+  <select (change)="handlePageSizeChange($event)">
+    <option *ngFor="let ps of pageSizes" [value]="ps">
+      {{ ps }}
+    </option>
+  </select>
+</div>
+
+<div class="list row">
+  <div class="col-md-8">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="pageParams.SearchString"/>
+      <div class="">
+        <button class="btn btn-outline-secondary" type="button" (click)="getPage()">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class = "example-section">
+<section class="example-section" [formGroup]="categories">
+  <h4>Select displaying editions:</h4>
+  <p><mat-checkbox formControlName="isBook">Books</mat-checkbox></p>
+  <p><mat-checkbox formControlName="isMagazine">Magazines</mat-checkbox></p>
+  <p><mat-checkbox formControlName="isNewspaper">Newspapers</mat-checkbox></p>
+</section>
+</div> -->
+
+<mat-select [formControl]="categories" multiple>
+  <mat-option *ngFor="let category of categoriesList" [value]="category">{{category.name}}</mat-option>
+</mat-select>
+<button (click)="filter()">Ebaindze</button>
 
 <mat-grid-list cols="5" rowHeight="1:1.6">
-    <mat-grid-tile *ngFor="let edition of editionList" >
+    <mat-grid-tile *ngFor="let edition of editionList | paginate: { itemsPerPage:pageParams.ElementsPerPage, currentPage:pageParams.CurrentPageNumber,totalItems: totalItemsCount  }">
       <mat-card>
           <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
             <mat-card-title>{{edition?.title}}</mat-card-title>
-            <mat-card-subtitle>{{edition.authors[0]?.name}}</mat-card-subtitle>
+            <mat-card-subtitle>{{edition.type}}</mat-card-subtitle>
           </mat-card-header>
-          <img height="300px" width="300px" src="https://img.icons8.com/emoji/452/closed-book.png" alt="edition">
+          <img height="300px" width="300px" src="https://img.icons8.com/emoji/452/closed-book.png" alt="edition" routerLink="/detail/{{edition.id}}">
           <mat-card-content>
             <p class="price">{{edition.price}}</p>
           </mat-card-content>
@@ -18,6 +54,5 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<div class="card-footer pb-0 pt-3">
-  <jw-pagination [items]="editionList" [maxPages]="totalAmountPages" (changePage)="onChangePage($event)"></jw-pagination>
-</div>
+<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+

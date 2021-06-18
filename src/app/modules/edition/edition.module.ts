@@ -7,9 +7,16 @@ import { MatCardModule} from '@angular/material/card';
 import { EditionEditComponent } from './components/edition-edit/edition-edit.component';
 import { EditionDetailComponent } from './components/edition-detail/edition-detail.component';
 import { EditionPageComponent } from './components/edition-page/edition-page.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { JwPaginationModule } from 'jw-angular-pagination';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule}  from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+
+
+
 
 
 @NgModule({
@@ -21,10 +28,14 @@ import { JwPaginationModule } from 'jw-angular-pagination';
   ],
   imports: [
     CommonModule,
-    JwPaginationModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatGridListModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
-    MatPaginatorModule,
+    MatSelectModule,
     NgxPaginationModule,
     RouterModule
   ]

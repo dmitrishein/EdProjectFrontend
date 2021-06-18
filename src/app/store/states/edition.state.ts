@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators'
-import {map} from 'rxjs/operators'
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { Edition, EditionPageResponseModel } from "src/app/shared/models/edition";
 import { GetEditionList, GetEditionPage } from '../actions/edition.action';
 import { EditionService } from 'src/app/shared/services/edition.service';
-import { $ } from 'protractor';
 
 export interface EditionStateModel {
     editionPage : EditionPageResponseModel| null;
@@ -33,9 +31,9 @@ export class EditionState {
         }
     }
 
-    @Selector() static totalPagesNumber (state:EditionStateModel){ 
-        console.log(state.editionPage?.TotalPagesAmount);
-        return state.editionPage?.TotalPagesAmount;
+    @Selector() static totalItemsAmount (state:EditionStateModel){ 
+        console.log(state.editionPage?.TotalItemsAmount);
+        return state.editionPage?.TotalItemsAmount;
     }
 
     @Action(GetEditionList)
@@ -53,11 +51,9 @@ export class EditionState {
             tap((result : EditionPageResponseModel)=>{
                 let response = Object.values(result);
                 ctx.setState({editionPage:{
-                    TotalPagesAmount: response[0],
-                    isNextPage : response[1],
-                    isPrevPage : response[2],
-                    CurrentPage : response[3],
-                    Editions :response[4]
+                    TotalItemsAmount: response[0],
+                    CurrentPage : response[1],
+                    Editions :response[2]
                 }})    
             })
         );

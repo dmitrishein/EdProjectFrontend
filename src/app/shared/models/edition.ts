@@ -9,6 +9,11 @@ export interface Edition {
     authors : Author[];
 }
 
+export interface EditionsType{
+    isBook : number,
+    isMagazine : number,
+    isNewspaper : number
+}
 export interface EditionPageParameters{
     ElementsPerPage : number;
     CurrentPageNumber : number;
@@ -19,9 +24,7 @@ export interface EditionPageParameters{
 }
 
 export interface EditionPageResponseModel{
-    TotalPagesAmount : number;
-    isNextPage : boolean;
-    isPrevPage : boolean;
+    TotalItemsAmount : number;
     CurrentPage : number;
     Editions : Edition[];
 }
