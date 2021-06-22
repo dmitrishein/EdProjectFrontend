@@ -2,18 +2,20 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators'
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
-import { Edition, EditionPageResponseModel } from "src/app/shared/models/edition";
-import { GetEditionList, GetEditionPage } from '../actions/edition.action';
+import { Edition, EditionPageResponseModel, EditionPageParameters } from "src/app/shared/models/edition";
+import { GetEditionList, GetEditionPage, SetPageParams } from '../actions/edition.action';
 import { EditionService } from 'src/app/shared/services/edition.service';
 
 export interface EditionStateModel {
     editionPage : EditionPageResponseModel| null;
+    pageParamaters : EditionPageParameters | null;
 }
   
 @State<EditionStateModel>({
       name: 'edition',
       defaults: {
-        editionPage : null
+        editionPage : null,
+        pageParamaters : null
     }
 })
 
@@ -32,8 +34,10 @@ export class EditionState {
     }
 
     @Selector() static totalItemsAmount (state:EditionStateModel){ 
-        console.log(state.editionPage?.TotalItemsAmount);
         return state.editionPage?.TotalItemsAmount;
+    }
+    @Selector() static getPageParams (state:EditionStateModel){ 
+        return state.pageParamaters;
     }
 
     @Action(GetEditionList)
@@ -47,15 +51,37 @@ export class EditionState {
 
     @Action(GetEditionPage)
     getEditionPage(ctx: StateContext<EditionStateModel>, action: GetEditionPage){
-        return this.editionService.getEditionPage(action.params).pipe(
-            tap((result : EditionPageResponseModel)=>{
+        var context = ctx.getState();
+        return this.editionService.getEditionPage(context.pageParamaters).pipe(
+            tap((result : EditionPageResponseModel)=>{        
                 let response = Object.values(result);
-                ctx.setState({editionPage:{
-                    TotalItemsAmount: response[0],
-                    CurrentPage : response[1],
-                    Editions :response[2]
+                ctx.patchState({editionPage:{
+                    MaxPrice : response[0],
+                    MinPrice : response[1],
+                    TotalItemsAmount: response[2],
+                    CurrentPage : response[3],
+                    Editions : response[4]
                 }})    
             })
         );
+    }
+
+    @Action(SetPageParams)
+    setPageParams(ctx: StateContext<EditionStateModel>, action: SetPageParams){
+        if(action.params === undefined){
+            ctx.patchState({pageParamaters:{
+                ElementsPerPage : 5,
+                CurrentPageNumber : 1,
+                SearchString : "",
+                MaxPrice : 0,
+                MinPrice : 0,
+                EditionTypes : [1,2,3],
+                SortType : 0,
+                IsReversed : false
+            }})
+            return;
+        }
+        
+        ctx.patchState({pageParamaters: action.params});     
     }
 }

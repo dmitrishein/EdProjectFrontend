@@ -15,7 +15,7 @@ export class EditionService {
     );
   }
 
-  getEditionPage( pageParams : EditionPageParameters  ){
+  getEditionPage( pageParams : EditionPageParameters | null ){
     return this.http.post<EditionPageResponseModel>(
       'https://localhost:44386/Edition/GetEditionPage', pageParams
     );

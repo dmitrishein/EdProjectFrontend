@@ -14,6 +14,7 @@ export interface EditionsType{
     isMagazine : number,
     isNewspaper : number
 }
+
 export interface EditionPageParameters{
     ElementsPerPage : number;
     CurrentPageNumber : number;
@@ -21,9 +22,13 @@ export interface EditionPageParameters{
     MaxPrice : number;
     MinPrice : number;
     EditionTypes : number[];
+    SortType : number;
+    IsReversed : boolean;
 }
 
 export interface EditionPageResponseModel{
+    MaxPrice : number,
+    MinPrice : number,
     TotalItemsAmount : number;
     CurrentPage : number;
     Editions : Edition[];
