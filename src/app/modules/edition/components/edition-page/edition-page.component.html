@@ -1,13 +1,16 @@
-<div class="">
+<!-- Top -->
+<div  class="top-container">
+
+<div class="items-count">
   Items per Page:
-  <select (change)="handlePageSizeChange($event)">
-    <option *ngFor="let ps of pageSizes" [value]="ps">
+  <select [ngModel] ="selectedSize" (change)="handlePageSizeChange($event)">
+    <option [ngValue]="ps" *ngFor="let ps of pageSizes" [value]="ps">
       {{ ps }}
     </option>
   </select>
 </div>
 
-<div class="sortTypes">
+<div class="sort-types">
   Sort by:
   <select [ngModel] = "selectedSortType" (ngModelChange)="handlePageSorting($event)">
     <option  [ngValue]="sort" *ngFor="let sort of sortTypeList" >
@@ -16,24 +19,33 @@
   </select>
 </div>
 
-<div class="list row">
-  <div class="col-md-8">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="pageParams.SearchString"/>
-      <div class="">
-        <button (click)="getPage()">Search </button>
-      </div>
-    </div>
-  </div>
+<div class="search-field">
+  <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="pageParams.SearchString"/>
+  <button (click)="getPage()">Search </button>
 </div>
+  
 
 
-<mat-select [formControl]="selectedCategories" placeholder="Select categories..." multiple>
-  <mat-option *ngFor="let category of categoriesList" [value]="category" >{{category.name}}</mat-option>
-</mat-select>
-<button (click)="filterByCategories()">Apply filter</button>
+</div>
+<!-- Top -->
 
-<mat-grid-list cols="5" rowHeight="1:1.6">
+<div class="filter-side">
+<!-- Filter Left Side -->
+<section class="example-section" [formGroup]="categories">
+  <h4>Select categories :</h4>
+  <p><mat-checkbox formControlName="book">Books</mat-checkbox></p>
+  <p><mat-checkbox formControlName="magazine">Magazine</mat-checkbox></p>
+  <p><mat-checkbox formControlName="newspaper">Newspaper</mat-checkbox></p>
+</section>
+ <ngx-slider class ="price-selector-slider" [(value)]="pageParams.MinPrice" [(highValue)]="pageParams.MaxPrice" [options]="sliderOptions"></ngx-slider>
+ <button (click)="filterByCategories()">Apply filter</button>
+ <button (click)="resetFilter()">Reset filter</button>
+</div>
+<!-- Filter Left Side -->
+
+<!-- Container with editions -->
+<div class="editions-contatiner">
+<mat-grid-list cols="4" rowHeight="1:1.6">
     <mat-grid-tile *ngFor="let edition of editionList | paginate: { itemsPerPage:pageParams.ElementsPerPage, currentPage:pageParams.CurrentPageNumber,totalItems: totalItemsCount  }">
       <mat-card>
           <mat-card-header>
@@ -52,5 +64,9 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+<pagination-controls class="paginator" (pageChange)="pageChanged($event)"></pagination-controls>
+
+</div>
+
+<!-- Container with editions -->
 

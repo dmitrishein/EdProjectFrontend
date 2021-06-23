@@ -1,3 +1,51 @@
-.example-section {
-    margin-left: 25px;
+.editions-contatiner{
+    display: flexbox;
+    height: 80%;
+    width: 75%;
+    float: right;
+    background-color:white;
+    margin-bottom: 50px;
+}
+
+.paginator{
+    padding-bottom: 20px;
+}
+
+.filter-side { 
+    height: 100%;
+    width: 400px;
+    float: left;
+    background-color:white;
+    padding-top: 20px;
+    padding-right: 20px;
+    border-right: 2px solid #000; 
+
+}
+.category-selector{
+    margin-bottom: 10px;
+}
+.price-selector-slider{
+  size: 20px;
+  padding: auto;
+}
+.top-container { 
+    width: 70%; /* Ширина блока */
+    padding: 5px; /* Поля */
+    display: flex;
+    float: right;
+
+}
+
+.items-count {
+    width: 200px; /* Ширина блока */
+}
+
+.sort-types{
+    width: 300px;
+}
+
+.search-field{
+    width: 500px;
+    margin-left: 100px;
+    display: flex;
 }
