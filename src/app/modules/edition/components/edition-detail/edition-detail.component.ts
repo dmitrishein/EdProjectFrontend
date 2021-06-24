@@ -12,7 +12,7 @@ import { EditionService } from 'src/app/shared/services/edition.service';
   styleUrls: ['./edition-detail.component.css']
 })
 export class EditionDetailComponent implements OnInit {
-  selectedEdition$!: Edition;
+  selectedEdition$ !: Edition;
 
   constructor(private route : ActivatedRoute, private store:Store) { }
 

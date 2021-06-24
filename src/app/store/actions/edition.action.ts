@@ -9,6 +9,10 @@ export class GetEditionPage {
     constructor (public params : EditionPageParameters){};
 }
 
+export class GetDefaultEditionPage {
+    static readonly type = '[Edition] Get Default Edition Page';
+}
+
 export class SetPageParameters {
     static readonly type = '[Edition] Set Page Params'
     constructor (public params : EditionPageParameters){};

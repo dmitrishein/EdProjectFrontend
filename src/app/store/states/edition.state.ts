@@ -3,7 +3,7 @@ import { tap } from 'rxjs/operators'
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { EditionPageResponseModel, EditionPageParameters } from "src/app/shared/models/edition";
-import { GetEditionPage, SetPageParameters} from '../actions/edition.action';
+import { GetDefaultEditionPage, GetEditionPage, SetPageParameters} from '../actions/edition.action';
 import { EditionService } from 'src/app/shared/services/edition.service';
 
 export interface EditionStateModel {
@@ -34,7 +34,7 @@ export class EditionState {
         return state.editionPage?.MaxPrice;
     }
     @Selector() static getPageParams (state:EditionStateModel){ 
-        return state.pageParameters;
+        return state!.pageParameters;
     }
     @Selector() static getEditionById(state: EditionStateModel){
         return (id:number) => { 
@@ -50,19 +50,21 @@ export class EditionState {
         return this.editionService.getEditionPage(action.params).pipe(
             tap((result : EditionPageResponseModel)=>{        
                 let response = Object.values(result);
-                ctx.patchState({editionPage:{
+                ctx.setState({editionPage:{
                     MaxPrice : response[0],
                     MinPrice : response[1],
                     TotalItemsAmount: response[2],
                     CurrentPage : response[3],
                     Editions : response[4]
-                }}) 
+                },
+                pageParameters:action.params}) 
             })
         );
     }
 
     @Action(SetPageParameters)
     setPageParameters(ctx: StateContext<EditionStateModel>, action : SetPageParameters){
+        console.log(action.params);
         ctx.patchState({pageParameters:action.params});
     }
 }

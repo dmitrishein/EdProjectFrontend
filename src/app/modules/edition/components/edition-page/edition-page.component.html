@@ -3,8 +3,8 @@
 
 <div class="items-count">
   Items per Page:
-  <select [ngModel] ="selectedSize" (change)="handlePageSizeChange($event)">
-    <option [ngValue]="ps" *ngFor="let ps of pageSizes" [value]="ps">
+  <select [ngModel] ="selectedSize" (ngModelChange)="handlePageSizeChange($event)">
+    <option [ngValue]="ps" *ngFor="let ps of pageSizes" >
       {{ ps }}
     </option>
   </select>
@@ -37,7 +37,7 @@
   <p><mat-checkbox formControlName="magazine">Magazine</mat-checkbox></p>
   <p><mat-checkbox formControlName="newspaper">Newspaper</mat-checkbox></p>
 </section>
- <ngx-slider class ="price-selector-slider" [(value)]="pageParams.MinPrice" [(highValue)]="pageParams.MaxPrice" [options]="sliderOptions"></ngx-slider>
+ <ngx-slider class ="price-selector-slider" [(value)]="pageParams.MinUserPrice" [(highValue)]="maxVal" [options]="sliderOptions"></ngx-slider>
  <button (click)="filterByCategories()">Apply filter</button>
  <button (click)="resetFilter()">Reset filter</button>
 </div>

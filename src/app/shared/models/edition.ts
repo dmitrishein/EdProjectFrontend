@@ -19,8 +19,8 @@ export interface EditionPageParameters{
     ElementsPerPage : number;
     CurrentPageNumber : number;
     SearchString : string;
-    MaxPrice : number;
-    MinPrice : number;
+    MaxUserPrice : number;
+    MinUserPrice : number;
     EditionTypes : number[];
     SortType : number;
     IsReversed : boolean;
