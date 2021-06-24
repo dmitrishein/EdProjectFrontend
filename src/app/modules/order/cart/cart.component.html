@@ -3,5 +3,6 @@
     <p>Ordered Items: </p>
     <div *ngFor="let orderItem of orderItems">
         {{orderItem | json}}
+        <button (click)="removeItem(orderItem.EditionId)" mat-button>Remove</button>
     </div>
 </div>

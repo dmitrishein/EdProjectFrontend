@@ -7,5 +7,5 @@ export class AddOrderItem {
 }
 export class RemoveOrderItem {
     static readonly type = '[Order] Remove Order Item';
-    constructor (public id : number){};
+    constructor (public id : number){ };
 }
