@@ -11,6 +11,7 @@ import { UserProfileComponent } from './modules/user/components/user-profile/use
 import { EditionPageComponent } from './modules/edition/components/edition-page/edition-page.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { UserGuard } from './shared/guards/user.guard';
+import { CartComponent } from './modules/order/cart/cart.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { UserGuard } from './shared/guards/user.guard';
       { path: 'emailconfirmation', canActivate:[UserGuard],component: EmailConfirmationComponent},
       { path: 'resetpassword', component: PasswordResetComponent},
       { path: 'profile', canActivate:[AuthGuard], component: UserProfileComponent},
-      { path: 'detail/:id', component: EditionDetailComponent}
+      { path: 'detail/:id', component: EditionDetailComponent},
+      { path: 'cart', component: CartComponent}
     ])
   ],
   exports: [RouterModule]

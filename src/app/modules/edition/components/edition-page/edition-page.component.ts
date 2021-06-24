@@ -2,10 +2,11 @@ import { Component,OnInit,OnDestroy } from '@angular/core';
 import { FormControl,FormBuilder,FormGroup } from '@angular/forms';
 import { Options, LabelType } from "@angular-slider/ngx-slider";
 import { Store } from '@ngxs/store';
-import { EditionPageParameters, EditionsType } from 'src/app/shared/models/edition';
+import { EditionPageParameters } from 'src/app/shared/models/edition';
 import { Edition } from 'src/app/shared/models/edition';
 import { GetDefaultEditionPage, GetEditionPage, SetPageParameters } from 'src/app/store/actions/edition.action';
 import { EditionState } from 'src/app/store/states/edition.state';
+import { AddOrderItem } from 'src/app/store/actions/order.action';
 
 export interface Categories {
   id : number,
@@ -122,22 +123,20 @@ export class EditionPageComponent implements OnInit {
         this.selectedSortType = this.sortTypeList.filter(x => x.id === res.SortType && x.isReversed === res.IsReversed)[0]; 
       }      
     })
+    
     this.getPage();
   }
-
   filterByCategories(){
     let checks : boolean[] = Object.values(this.categories.value);
     let selectedTypes : number[] = [
-      checks[0]? 1:0,
-      checks[1]? 2 :0,
+      checks[0]? 1 : 0,
+      checks[1]? 2 : 0,
       checks[2]? 3 : 0
     ]
     this.pageParams.EditionTypes = selectedTypes;
     this.pageParams.CurrentPageNumber = 1;
-    console.log(this.pageParams);
     this.getPage();
   }
-
   resetFilter(){
     this.selectedCategories = new FormControl();
     this.pageParams.MaxUserPrice = 0;
@@ -145,7 +144,6 @@ export class EditionPageComponent implements OnInit {
     this.pageParams.EditionTypes = [1,2,3];
     this.getPage();
   }
-
   getPage(){    
     this.store.dispatch(new GetEditionPage(this.pageParams)).subscribe(
       () => {
@@ -170,7 +168,6 @@ export class EditionPageComponent implements OnInit {
         })
     })
   }
-
   pageChanged(pagenum : number){
     this.pageParams.CurrentPageNumber = pagenum;
     this.getPage();
@@ -189,6 +186,13 @@ export class EditionPageComponent implements OnInit {
     this.pageParams.CurrentPageNumber = 1;
     this.getPage();
   }
+
+  addToCart(edit:Edition){
+    this.store.dispatch(new AddOrderItem(edit));
+  }
+
+
+
   ngOnInit(): void {
     
   }

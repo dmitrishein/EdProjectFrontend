@@ -28,6 +28,8 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { EditionState } from './store/states/edition.state';
 import { JwPaginationModule } from 'jw-angular-pagination';
+import { OrderState } from './store/states/order.state';
+import { OrderModule } from './modules/order/order.module';
 
 
 
@@ -38,9 +40,9 @@ import { JwPaginationModule } from 'jw-angular-pagination';
   ],
   imports: [
     BrowserModule,
-    NgxsModule.forRoot([AccountState,EditionState]),
+    NgxsModule.forRoot([AccountState,EditionState,OrderState]),
     NgxsStoragePluginModule.forRoot({
-      key:[AccountState, EditionState],
+      key:[AccountState, EditionState, OrderState],
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
@@ -48,6 +50,7 @@ import { JwPaginationModule } from 'jw-angular-pagination';
     AccountModule,
     EditionModule,
     UserModule,
+    OrderModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
