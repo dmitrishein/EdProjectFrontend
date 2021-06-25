@@ -9,15 +9,16 @@ export interface Edition {
     authors : Author[];
 }
 
-export interface EditionPageParameters{
-    ElementsPerPage : number;
-    CurrentPageNumber : number;
-    SearchString : string;
-    MaxUserPrice : number;
-    MinUserPrice : number;
-    EditionTypes : number[];
-    SortType : number;
-    IsReversed : boolean;
+export class EditionPageParameters{
+    ElementsPerPage !: number;
+    CurrentPageNumber !: number;
+    SearchString !: string;
+    MaxUserPrice !: number;
+    MinUserPrice !: number;
+    EditionTypes !: number[];
+    SortType !: number;
+    IsReversed !: boolean;
+    constructor(){};
 }
 
 export interface EditionPageResponseModel{

@@ -2,7 +2,12 @@
 <div class="authors">
     <p>Ordered Items: </p>
     <div *ngFor="let orderItem of orderItems">
-        {{orderItem | json}}
+        {{orderItem.EditionId}} | {{orderItem.Title}} | {{orderItem.Price}}$ | {{orderItem.ItemsCount}} piece(s)| {{orderItem.OrderAmount}}$
         <button (click)="removeItem(orderItem.EditionId)" mat-button>Remove</button>
+        <button (click)="increaseItemCount(orderItem)" mat-button>Add one more</button>
+        <button (click)="decreaseItemCount(orderItem)" mat-button>Remove one more</button>
     </div>
+    <h2>Checkout: {{priceToCheckOut}} $</h2>   
+    <button mat-button routerLink="/editions">Back To Previous Page</button>
+    <button mat-button>Create Order</button>
 </div>

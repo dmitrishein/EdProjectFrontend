@@ -91,6 +91,7 @@ export class EditionPageComponent implements OnInit {
     this.store.select(EditionState.getPageParams).subscribe(
       (res)=> { 
       if(res === null){
+        debugger;
         this.pageParams = {
           ElementsPerPage : 5,
           CurrentPageNumber : 1,
@@ -98,7 +99,7 @@ export class EditionPageComponent implements OnInit {
           MaxUserPrice : this.sliderOptions.ceil!,
           MinUserPrice : this.sliderOptions.floor!,
           EditionTypes : [1,2,3],
-          SortType : 0,
+          SortType : 1,
           IsReversed: false   
         }
         this.categories = fb.group({
@@ -106,9 +107,10 @@ export class EditionPageComponent implements OnInit {
           magazine: true,
           newspaper: true
         })
-        
+        this.minVal = this.sliderOptions.floor!;
+        this.maxVal = this.sliderOptions.ceil!;
         this.selectedSize = this.pageSizes[0];
-        this.selectedSortType = this.sortTypeList.filter(x => x.id === 1 && x.isReversed === false)[0];
+        this.selectedSortType = this.sortTypeList.find(x => x.id === 1 && x.isReversed === false)!;
       }
       else {
         this.pageParams = res!;
@@ -120,12 +122,13 @@ export class EditionPageComponent implements OnInit {
           newspaper: this.pageParams!.EditionTypes[2] === 0 ? false : true
         })
         this.selectedSize = this.pageSizes.filter(x=> x === res.ElementsPerPage)[0];
-        this.selectedSortType = this.sortTypeList.filter(x => x.id === res.SortType && x.isReversed === res.IsReversed)[0]; 
+        this.selectedSortType = this.sortTypeList.find(x => x.id === res.SortType && x.isReversed === res.IsReversed)!;
       }      
     })
     
     this.getPage();
   }
+
   filterByCategories(){
     let checks : boolean[] = Object.values(this.categories.value);
     let selectedTypes : number[] = [
@@ -135,19 +138,27 @@ export class EditionPageComponent implements OnInit {
     ]
     this.pageParams.EditionTypes = selectedTypes;
     this.pageParams.CurrentPageNumber = 1;
+    this.pageParams.MinUserPrice = this.minVal;
+    this.pageParams.MaxUserPrice = this.maxVal;
     this.getPage();
   }
   resetFilter(){
-    this.selectedCategories = new FormControl();
-    this.pageParams.MaxUserPrice = 0;
-    this.pageParams.MinUserPrice = 0;
+    this.categories = this.fb.group({
+      book: true,
+      magazine: true,
+      newspaper: true
+    })
+    this.maxVal= this.store.selectSnapshot(EditionState.getMaxPrice)!;
+    this.minVal = this.store.selectSnapshot(EditionState.getMinPrice)!;
+    this.pageParams.MaxUserPrice = this.maxVal;
+    this.pageParams.MinUserPrice = this.minVal;
     this.pageParams.EditionTypes = [1,2,3];
     this.getPage();
   }
-  getPage(){    
-    this.store.dispatch(new GetEditionPage(this.pageParams)).subscribe(
-      () => {
-        this.store.select(EditionState.editions).subscribe(
+  getPage(){
+    this.store.dispatch(new SetPageParameters(this.pageParams));
+    this.store.dispatch(new GetEditionPage(this.pageParams));
+    this.store.select(EditionState.editions).subscribe(
           (editionPage) => {
             this.editionList = editionPage!;
             this.store.select(EditionState.totalItemsAmount).subscribe(
@@ -155,17 +166,7 @@ export class EditionPageComponent implements OnInit {
                 this.totalItemsCount = res!;
               }
             )
-            this.store.select(EditionState.getMaxPrice).subscribe(
-              (res) => {
-                this.pageParams.MaxUserPrice = res!;
-              }
-            )
-            this.store.select(EditionState.getMinPrice).subscribe(
-              (res) => {
-                this.pageParams.MinUserPrice = res!;
-              }
-            )
-        })
+
     })
   }
   pageChanged(pagenum : number){
