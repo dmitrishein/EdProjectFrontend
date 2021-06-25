@@ -20,7 +20,7 @@ export interface OrderStateModel {
 @Injectable()
 export class OrderState {
 
-    constructor(private editionService: EditionService) {
+    constructor() {
     }
 
     @Selector() static orderedItems (state:OrderStateModel){ 

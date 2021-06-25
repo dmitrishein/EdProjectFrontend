@@ -9,5 +9,5 @@
     </div>
     <h2>Checkout: {{priceToCheckOut}} $</h2>   
     <button mat-button routerLink="/editions">Back To Previous Page</button>
-    <button mat-button>Create Order</button>
+    <button  (click)="onCheckout(priceToCheckOut)" mat-button>Create Order</button>
 </div>
