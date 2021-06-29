@@ -1,5 +1,9 @@
-
+<button mat-button routerLink="/editions">
+    Back to previous page
+    <mat-icon>first_page</mat-icon>
+  </button>
 <mat-card class="example-card">
+
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>{{ selectedEdition$.title}}</mat-card-title>
@@ -21,10 +25,16 @@
         <div>
             <p>Status: {{ selectedEdition$.status}} </p>
         </div>
-  
+        <button *ngIf="!isInCart(selectedEdition$)" (click)="addToCart(selectedEdition$)" mat-button>
+            <mat-icon>add_shopping_cart</mat-icon>
+            Add to cart
+          </button>
+        <button *ngIf="isInCart(selectedEdition$)" (click)="removeFromCart(selectedEdition$.id)" mat-button>
+            <mat-icon>done</mat-icon>
+            In cart
+          </button>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>Add to cart</button>
-      <button mat-button routerLink="/editions">Back to previous page</button>
-    </mat-card-actions>
+    <h2>Descriprion:</h2>
+        <p> {{selectedEdition$.description}}</p>
+
   </mat-card>

@@ -4,9 +4,10 @@ import { Options, LabelType } from "@angular-slider/ngx-slider";
 import { Store } from '@ngxs/store';
 import { EditionPageParameters } from 'src/app/shared/models/edition';
 import { Edition } from 'src/app/shared/models/edition';
-import { GetDefaultEditionPage, GetEditionPage, SetPageParameters } from 'src/app/store/actions/edition.action';
+import { GetEditionPage, SetPageParameters } from 'src/app/store/actions/edition.action';
 import { EditionState } from 'src/app/store/states/edition.state';
-import { AddOrderItem } from 'src/app/store/actions/order.action';
+import { AddOrderItem ,RemoveOrderItem } from 'src/app/store/actions/order.action';
+import { OrderState } from 'src/app/store/states/order.state';
 
 export interface Categories {
   id : number,
@@ -191,8 +192,16 @@ export class EditionPageComponent implements OnInit {
   addToCart(edit:Edition){
     this.store.dispatch(new AddOrderItem(edit));
   }
-
-
+  removeFromCart(editId : number){
+    this.store.dispatch(new RemoveOrderItem(editId));
+  }
+  isInCart(edit:Edition):boolean{
+    let flag = false;
+    this.store.select(OrderState.isInCart).subscribe(
+      (res)=>{ return flag = res(edit);}
+    )
+    return flag;
+  }
 
   ngOnInit(): void {
     

@@ -1,0 +1,41 @@
+table {
+    width: 90%;
+}
+.mat-column-Title {
+    padding-left: 16px;
+    font-size: 20px;
+}
+
+.mat-column-Price{
+    font-size: 20px;
+}
+.mat-column-Id{
+    width: 20px;
+    font-size: 20px;
+}
+.mat-column-Count{
+    font-size: 20px;
+}
+
+.mat-column-Total{
+    font-size: 20px;
+    font-weight: bold;
+}
+.Cart{
+    position: static;
+}
+h1{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    text-align: left;
+}
+.checkout{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 27px;
+    text-align: left;
+}

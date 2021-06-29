@@ -4,15 +4,19 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { EditionService } from 'src/app/shared/services/edition.service';
 import { OrderItem } from 'src/app/shared/models/order';
-import { AddOrderItem, DecreaseOrderItemCount, IncreaseOrderItemCount, RemoveOrderItem} from '../actions/order.action';
+import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem} from '../actions/order.action';
+import { OrderService } from 'src/app/shared/services/order.service';
+import { Edition } from 'src/app/shared/models/edition';
 
 export interface OrderStateModel {
+    orderId : number,
     orderItems : OrderItem[];
 }
   
 @State<OrderStateModel>({
       name: 'order',
       defaults: {
+        orderId : 0,
         orderItems : [],
     }
 })
@@ -20,9 +24,12 @@ export interface OrderStateModel {
 @Injectable()
 export class OrderState {
 
-    constructor() {
+    constructor(private orderService:OrderService) {
     }
 
+    @Selector() static orderId (state:OrderStateModel){ 
+        return state.orderId;
+    }
     @Selector() static orderedItems (state:OrderStateModel){ 
         return state.orderItems;
     }
@@ -30,11 +37,20 @@ export class OrderState {
         const sum = state.orderItems.reduce((sum,current) => sum + current.OrderAmount, 0)
         return sum;
     }
-    
+    @Selector() static isInCart(state: OrderStateModel){
+        debugger;
+        return (edition:Edition) => { 
+            return state.orderItems.find(x => x.EditionId === edition.id) ? true : false;
+        }
+    }
 
     @Action(AddOrderItem)
     addOrderItem(ctx: StateContext<OrderStateModel>, action : AddOrderItem){
        const contex = ctx.getState();
+       if(contex.orderItems.find(x=>x.EditionId === action.params.id)){
+           debugger;
+           return;
+       }
        contex.orderItems.push({
         EditionId : action.params.id,
         Title: action.params.title,
@@ -53,8 +69,7 @@ export class OrderState {
                contex.orderItems.splice(index,1);
            }
        });
-       console.log(contex.orderItems);
-       ctx.setState({orderItems: contex.orderItems});
+       ctx.setState({orderId:contex.orderId,orderItems: contex.orderItems});
     }
     @Action(IncreaseOrderItemCount)
     updateCount(ctx: StateContext<OrderStateModel>, action : IncreaseOrderItemCount){
@@ -73,5 +88,20 @@ export class OrderState {
        ctx.patchState(contex);
     }
 
+    @Action(CreateOrder)
+    createOrder(ctx: StateContext<OrderStateModel>, action : CreateOrder){
+        debugger;
+        return this.orderService.createPayment(action.params).pipe(
+            tap((result) => { 
+              ctx.patchState({ orderId : result })
+            }
+            )
+        );  
+    }
+
+    @Action(RemoveOrder)
+    removeOrder(ctx: StateContext<OrderStateModel>, action : RemoveOrder){
+       ctx.setState({orderId:0,orderItems: []});
+    }
 
 }

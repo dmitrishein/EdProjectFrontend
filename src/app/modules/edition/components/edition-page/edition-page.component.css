@@ -19,10 +19,17 @@
     padding-top: 20px;
     padding-right: 20px;
     border-right: 2px solid #000; 
+    margin-left: 10px;
 
 }
 .category-selector{
     margin-bottom: 10px;
+}
+.price{
+    font-size: 25px;
+    text-align: left;
+    font-weight: bold;
+    
 }
 .price-selector-slider{
   size: 20px;

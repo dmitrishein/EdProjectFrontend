@@ -21,7 +21,9 @@
 
 <div class="search-field">
   <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="pageParams.SearchString"/>
-  <button (click)="getPage()">Search </button>
+  <button (click)="getPage()">Search
+    <mat-icon>search</mat-icon> 
+  </button>
 </div>
   
 
@@ -55,10 +57,17 @@
           </mat-card-header>
           <img height="300px" width="300px" src="https://img.icons8.com/emoji/452/closed-book.png" alt="edition" routerLink="/detail/{{edition.id}}">
           <mat-card-content>
-            <p class="price">{{edition.price}}</p>
+            <p class="price">{{edition.price | number:'1.2-2'}}$</p>
           </mat-card-content>
           <mat-card-actions>
-            <button (click)="addToCart(edition)" mat-button>Add to cart</button>
+            <button *ngIf="!isInCart(edition)" (click)="addToCart(edition)" mat-button>
+              <mat-icon>add_shopping_cart</mat-icon>
+              Add to cart
+            </button>
+            <button *ngIf="isInCart(edition)" (click)="removeFromCart(edition.id)" mat-button>
+              <mat-icon>done</mat-icon>
+              Added to cart
+            </button>
           </mat-card-actions>
       </mat-card>
   </mat-grid-tile>

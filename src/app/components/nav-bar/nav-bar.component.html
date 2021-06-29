@@ -2,16 +2,23 @@
     <mat-toolbar>
       <button class="logo" routerLink="/editions">Book Store</button>
       <span class="spacer"></span>
-      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/login" > Login</button>
-      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/registration" > Sign Up</button>
+      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/login" >
+        <mat-icon>input</mat-icon>
+        Login 
+      </button>
+      <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/registration" >
+        <mat-icon>person_add</mat-icon>
+        Sign Up</button>
       <button   class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/profile" > Account
         <mat-icon>account_circle</mat-icon>
       </button>         
-      <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/" >Logout
+      <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/editions" >
+        Logout
         <mat-icon>exit_to_app</mat-icon>
       </button>
-      <button  class="fancy-button" routerLink="/cart" >Cart
+      <button  class="fancy-button" routerLink="/cart" >
         <mat-icon>shopping_cart</mat-icon>
+        Cart
       </button>
     </mat-toolbar>
 </p>

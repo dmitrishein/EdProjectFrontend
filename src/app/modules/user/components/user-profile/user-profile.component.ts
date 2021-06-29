@@ -14,6 +14,7 @@ export class UserProfileComponent implements OnInit {
   public userForm!: FormGroup;
   jwtToken ?:string;
   public dataEditEnable : Boolean = false;
+  editMail:boolean = true;
   public errorMessage : string = "";
 
   constructor(private store : Store) {  
@@ -36,6 +37,7 @@ export class UserProfileComponent implements OnInit {
 
   editEnable(){
     this.userForm.enable();
+    this.userForm.controls['email'].disable();
     this.dataEditEnable = true;
   }
   

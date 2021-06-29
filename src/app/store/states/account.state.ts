@@ -61,7 +61,7 @@ export class AccountState {
           user : null
         }),
         localStorage.removeItem("refreshToken");
-        this.router.navigate(['/']);
+        this.router.navigate(['/editions']);
       }),
     );
 
@@ -100,9 +100,10 @@ export class AccountState {
   }
 
   @Action(UpdateUserData)
-  updateUserData(ctx: StateContext<AccountStateModel>, action: UpdateUserData) {  
+  updateUserData(ctx: StateContext<AccountStateModel>, action: UpdateUserData) {
+    const context = ctx.getState(); 
     return this.userService.updateUser(action.payload).subscribe(
-      () =>{ ctx.dispatch(new GetUsersData(action.payload.email))}
+      () =>{ ctx.dispatch(new GetUsersData(context.user?.email!))}
     );    
   }
 

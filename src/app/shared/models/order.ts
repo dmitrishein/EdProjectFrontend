@@ -6,3 +6,8 @@ export interface OrderItem {
     OrderAmount : number,
     OrderId:number,
 }
+
+export interface CreateOrderModel {
+    SourceId : string,
+    OrderItems : OrderItem[]
+}

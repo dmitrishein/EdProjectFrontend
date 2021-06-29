@@ -1,13 +1,44 @@
-<p>cart works!</p>
-<div class="authors">
-    <p>Ordered Items: </p>
-    <div *ngFor="let orderItem of orderItems">
-        {{orderItem.EditionId}} | {{orderItem.Title}} | {{orderItem.Price}}$ | {{orderItem.ItemsCount}} piece(s)| {{orderItem.OrderAmount}}$
-        <button (click)="removeItem(orderItem.EditionId)" mat-button>Remove</button>
-        <button (click)="increaseItemCount(orderItem)" mat-button>Add one more</button>
-        <button (click)="decreaseItemCount(orderItem)" mat-button>Remove one more</button>
-    </div>
-    <h2>Checkout: {{priceToCheckOut}} $</h2>   
+<div class="Cart">
+    <h1>Ordered Items: </h1>
+    <h3 *ngIf= "orderItems.length === 0">Cart is Empty :(</h3>
+
+    <table *ngIf= "orderItems.length != 0" mat-table [dataSource]="orderItems" class="mat-elevation-z8">
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.EditionId}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Title">
+          <th mat-header-cell *matHeaderCellDef> Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.Title}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Price">
+          <th mat-header-cell *matHeaderCellDef> Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.Price}}$</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="Count">
+          <th mat-header-cell *matHeaderCellDef> Count </th>
+          <td mat-cell *matCellDef="let element">
+            <button (click)="decreaseItemCount(element)" mat-button>-</button>
+            {{element.ItemsCount}} item(s) 
+             <button (click)="increaseItemCount(element)" mat-button>+</button>
+           </td>
+        </ng-container>
+        <ng-container matColumnDef="Total">
+            <th mat-header-cell *matHeaderCellDef> Total </th>
+            <td mat-cell *matCellDef="let element"> 
+                {{element.OrderAmount | number:'1.2-2'}}$
+                <button (click)="removeItem(element.EditionId)" mat-button>Remove</button>
+            </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    
+    <h2 *ngIf="orderItems.length != 0" class="checkout">Checkout: {{priceToCheckOut | number:'1.2-2'}} $</h2>   
     <button mat-button routerLink="/editions">Back To Previous Page</button>
-    <button  (click)="onCheckout(priceToCheckOut)" mat-button>Create Order</button>
+    <button *ngIf="isLoggedIn$ | async" [disabled] = "orderItems.length === 0" [ngStyle]="{'color': orderItems.length != 0? 'white': 'black'}" (click)="onCheckout(priceToCheckOut)" mat-button>Pay Order</button>
 </div>

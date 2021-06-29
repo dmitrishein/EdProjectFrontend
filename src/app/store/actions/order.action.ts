@@ -1,5 +1,5 @@
 import { Edition } from "src/app/shared/models/edition";
-import { OrderItem } from "src/app/shared/models/order";
+import { CreateOrderModel, OrderItem } from "src/app/shared/models/order";
 
 export class AddOrderItem {
     static readonly type = '[Order] Add Order Item';
@@ -21,5 +21,9 @@ export class DecreaseOrderItemCount{
 
 export class CreateOrder{
     static readonly type = '[Order] Create Order';
-    constructor (public params : OrderItem){};
+    constructor (public params : CreateOrderModel){};
+}
+
+export class RemoveOrder{
+    static readonly type = '[Order] Remove Order';
 }
