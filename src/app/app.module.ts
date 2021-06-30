@@ -30,6 +30,7 @@ import { EditionState } from './store/states/edition.state';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { OrderState } from './store/states/order.state';
 import { OrderModule } from './modules/order/order.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -49,6 +50,7 @@ import { OrderModule } from './modules/order/order.module';
     NgxPaginationModule,
     AccountModule,
     EditionModule,
+    MatPaginatorModule,
     UserModule,
     OrderModule,
     MatCheckboxModule,
@@ -58,7 +60,8 @@ import { OrderModule } from './modules/order/order.module';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
-    JwPaginationModule
+    JwPaginationModule,
+   
   ],
   exports: [
   ],

@@ -27,10 +27,10 @@ export interface SortType {
 export class EditionPageComponent implements OnInit {
  
   sortTypeList : SortType[] = [
-    {id : 1, name : "Price Ascending", isReversed : false},
-    {id : 1 , name : "Price Descending", isReversed: true},
-    {id : 2 , name : "Title Ascending", isReversed: false},
-    {id : 2 , name : "Title Descending", isReversed: true}
+    {id : 1, name : "Price : From Low to High", isReversed : false},
+    {id : 1 , name : "Price : From High to Low", isReversed: true},
+    {id : 2 , name : "Title : A-Z", isReversed: false},
+    {id : 2 , name : "Title : Z-A", isReversed: true}
   ] 
   pageSizes = [5, 10, 15];
   categories!: FormGroup;

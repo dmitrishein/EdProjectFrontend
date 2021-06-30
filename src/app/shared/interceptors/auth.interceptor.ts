@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private store : Store) {  }
 
     intercept(req : HttpRequest<any>, next : HttpHandler) : Observable<HttpEvent<any>> {
-     debugger;
+     
       return next.handle(req)
         .pipe(
           catchError((error: HttpErrorResponse) => {

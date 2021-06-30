@@ -3,14 +3,15 @@ import { tap } from 'rxjs/operators'
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { EditionService } from 'src/app/shared/services/edition.service';
-import { OrderItem } from 'src/app/shared/models/order';
-import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem} from '../actions/order.action';
+import { OrderItem, OrderModel, OrdersPageResponseModel } from 'src/app/shared/models/order';
+import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, GetOrders, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem} from '../actions/order.action';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { Edition } from 'src/app/shared/models/edition';
 
 export interface OrderStateModel {
     orderId : number,
     orderItems : OrderItem[];
+    orders : OrdersPageResponseModel | null;
 }
   
 @State<OrderStateModel>({
@@ -18,6 +19,7 @@ export interface OrderStateModel {
       defaults: {
         orderId : 0,
         orderItems : [],
+        orders : null
     }
 })
 
@@ -27,6 +29,9 @@ export class OrderState {
     constructor(private orderService:OrderService) {
     }
 
+    @Selector() static orders (state:OrderStateModel){
+        return state.orders?.OrdersPage;
+    }
     @Selector() static orderId (state:OrderStateModel){ 
         return state.orderId;
     }
@@ -43,6 +48,9 @@ export class OrderState {
             return state.orderItems.find(x => x.EditionId === edition.id) ? true : false;
         }
     }
+    @Selector() static totalItemsAmount (state:OrderStateModel){ 
+        return state.orders?.TotalItemsAmount;
+    }
 
     @Action(AddOrderItem)
     addOrderItem(ctx: StateContext<OrderStateModel>, action : AddOrderItem){
@@ -57,7 +65,8 @@ export class OrderState {
         Price : action.params.price,
         OrderAmount: action.params.price,
         OrderId : 0,
-        ItemsCount : 1
+        ItemsCount : 1,
+        BookType :action.params.type
        })
        ctx.patchState(contex);
     }
@@ -69,7 +78,7 @@ export class OrderState {
                contex.orderItems.splice(index,1);
            }
        });
-       ctx.setState({orderId:contex.orderId,orderItems: contex.orderItems});
+       ctx.setState({orderId:contex.orderId,orderItems: contex.orderItems, orders: contex.orders});
     }
     @Action(IncreaseOrderItemCount)
     updateCount(ctx: StateContext<OrderStateModel>, action : IncreaseOrderItemCount){
@@ -101,7 +110,21 @@ export class OrderState {
 
     @Action(RemoveOrder)
     removeOrder(ctx: StateContext<OrderStateModel>, action : RemoveOrder){
-       ctx.setState({orderId:0,orderItems: []});
+       ctx.setState({orderId:0,orderItems: [],orders:null});
+    }
+
+    @Action(GetOrders)
+    getUserOrders (ctx: StateContext<OrderStateModel>, action : GetOrders){
+        return this.orderService.getUserOrders(action.params).pipe(
+            tap((ordersPage : OrdersPageResponseModel)=>{
+                let response = Object.values(ordersPage);         
+                ctx.patchState({orders: {
+                    TotalItemsAmount : response[0],
+                    CurrentPage : response[1],
+                    OrdersPage : response[2]
+                }});
+            })
+        )
     }
 
 }
