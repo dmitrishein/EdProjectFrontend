@@ -12,7 +12,10 @@ export interface CreateOrderModel {
     SourceId : string,
     OrderItems : OrderItem[]
 }
-
+export interface UpdateOrderModel {
+    OrderId : number,
+    SourceId : string
+}
 export interface OrdersPageParamsModel{
     ElementsPerPage : number;
     CurrentPageNumber : number;

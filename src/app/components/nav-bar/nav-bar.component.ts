@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user';
-import { map } from 'rxjs/operators';
+import { OrderState } from 'src/app/store/states/order.state';
 import { Logout } from '../../store/actions/account.actions';
 
 @Component({
@@ -12,14 +8,19 @@ import { Logout } from '../../store/actions/account.actions';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
+
 export class NavBarComponent implements OnInit {
-
   isLoggedIn$ = this._store.select(ourState => ourState.account.loggedIn);
+  cartLength !: number;
 
-  constructor(private _store : Store) { }
+  constructor(private _store : Store) {
+  }
 
   ngOnInit(): void {
-  }
+    this._store.select(OrderState.orderedItems).subscribe(
+      items => this.cartLength = items.length
+    )
+  } 
   
   logout() {
     this._store.dispatch(new Logout());

@@ -53,7 +53,8 @@
     <ng-container matColumnDef="OrderStatus">
         <th mat-header-cell *matHeaderCellDef> Status </th>
         <td mat-cell *matCellDef="let element"> 
-            {{element.statusType}}
+            <p *ngIf = "element.statusType != 'Unpaid'">{{element.statusType}}</p>
+            <button *ngIf = "element.statusType === 'Unpaid'" (click)="updateOrderStatus(element.id,element.total)"  mat-button>Pay</button>
         </td>
     </ng-container>
   

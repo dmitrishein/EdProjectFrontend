@@ -1,7 +1,7 @@
 <!-- Top -->
 <div  class="top-container">
 
-<div class="items-count">
+<div class="items-count" clickCatcher>
   Items per Page:
   <select [ngModel] ="selectedSize" (ngModelChange)="handlePageSizeChange($event)">
     <option [ngValue]="ps" *ngFor="let ps of pageSizes" >

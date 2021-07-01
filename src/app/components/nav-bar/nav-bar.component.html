@@ -9,16 +9,22 @@
       <button  class="fancy-button" *ngIf="!(isLoggedIn$ | async)" routerLink="/registration" >
         <mat-icon>person_add</mat-icon>
         Sign Up</button>
-      <button   class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/profile" > Account
+       <!-- Block 1  -->
+      <button class="fancy-button" [matMenuTriggerFor]="menu" *ngIf="isLoggedIn$ | async"  > Account
         <mat-icon>account_circle</mat-icon>
-      </button>         
+      </button> 
+      <mat-menu #menu="matMenu" class="menu-without-scroll">
+        <button mat-menu-item routerLink="/profile">My Profile</button>
+        <button mat-menu-item routerLink="/orders">My Orders</button>
+      </mat-menu>
+
       <button  (click)="logout()" class="fancy-button" *ngIf="isLoggedIn$ | async" routerLink="/editions" >
         Logout
         <mat-icon>exit_to_app</mat-icon>
       </button>
       <button  class="fancy-button" routerLink="/cart" >
-        <mat-icon>shopping_cart</mat-icon>
         Cart
+        <mat-icon [matBadge]="cartLength" matBadgeColor="warn">shopping_cart</mat-icon>
       </button>
     </mat-toolbar>
 </p>

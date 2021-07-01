@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit}  from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { Store } from '@ngxs/store';
 import { OrderModel, OrdersPageParamsModel } from 'src/app/shared/models/order';
-import { GetOrders } from 'src/app/store/actions/order.action';
+import { GetOrders, RemoveOrder, UpdateOrder } from 'src/app/store/actions/order.action';
 import { OrderState } from 'src/app/store/states/order.state';
 import { PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface SortType {
   id : number,
@@ -28,9 +30,10 @@ export class OrdersPageComponent implements OnInit {
   ]
   selectedSortType !: SortType;
   displayedColumns: string[] = ['OrderId', 'OrderTime', 'Product', 'Title','Quantity','OrderAmount','OrderStatus'];
-  orders!:OrderModel[];
-  params !: OrdersPageParamsModel;
 
+  orders!:OrderModel[];
+
+  params !: OrdersPageParamsModel;
 
   constructor(private store : Store) { 
     this.params ={
@@ -44,8 +47,8 @@ export class OrdersPageComponent implements OnInit {
 
     this.store.select(OrderState.orders).subscribe(
       (res)=>{
+        debugger;
         this.orders = res!;
-        console.log(res);
       }
     )
     this.store.select(OrderState.totalItemsAmount).subscribe(
@@ -57,8 +60,34 @@ export class OrdersPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
+  updateOrderStatus(orderId : number,sum:number){
+    debugger;
+    var handler = (<any>window).StripeCheckout.configure({
+      key : "pk_test_51IiJzdFHRC0nt9sgERFHWpA1jRn6fz4bRSheVUcCTXdbAFjLQqZFu2mYPmzeCPuVqN5I3fHUNwkTBZO0rZXWCZFD00redMUVSC",
+      locale : 'auto',
+      source: async (source: any) => {
+        this.store.dispatch(new UpdateOrder({SourceId:source.id,OrderId:orderId})).subscribe(
+          () => {
+            this.store.dispatch(new GetOrders(this.params));
+          },
+          (err) => {
+  
+          }
+        )
+      }
+    })
+  
+    handler.open({
+      email : this.store.selectSnapshot(state => state.account.user.email),
+      name: 'Book Store',
+      description: 'Your checkout',
+      amount: sum * 100
+    });
+  
+  }
   pageChanged(event:PageEvent){
     this.params.CurrentPageNumber = event.pageIndex + 1;
     this.params.ElementsPerPage = event.pageSize;

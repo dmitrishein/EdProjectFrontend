@@ -1,4 +1,4 @@
-import { Component,OnInit,OnDestroy } from '@angular/core';
+import { Component,OnInit,Output,EventEmitter } from '@angular/core';
 import { FormControl,FormBuilder,FormGroup } from '@angular/forms';
 import { Options, LabelType } from "@angular-slider/ngx-slider";
 import { Store } from '@ngxs/store';
@@ -26,6 +26,8 @@ export interface SortType {
 })
 export class EditionPageComponent implements OnInit {
  
+
+
   sortTypeList : SortType[] = [
     {id : 1, name : "Price : From Low to High", isReversed : false},
     {id : 1 , name : "Price : From High to Low", isReversed: true},
@@ -194,6 +196,7 @@ export class EditionPageComponent implements OnInit {
   }
   removeFromCart(editId : number){
     this.store.dispatch(new RemoveOrderItem(editId));
+
   }
   isInCart(edit:Edition):boolean{
     let flag = false;

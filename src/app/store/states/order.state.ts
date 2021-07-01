@@ -4,9 +4,10 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { EditionService } from 'src/app/shared/services/edition.service';
 import { OrderItem, OrderModel, OrdersPageResponseModel } from 'src/app/shared/models/order';
-import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, GetOrders, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem} from '../actions/order.action';
+import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, GetOrders, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem, UpdateOrder} from '../actions/order.action';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { Edition } from 'src/app/shared/models/edition';
+import { Subject } from 'rxjs';
 
 export interface OrderStateModel {
     orderId : number,
@@ -43,7 +44,6 @@ export class OrderState {
         return sum;
     }
     @Selector() static isInCart(state: OrderStateModel){
-        debugger;
         return (edition:Edition) => { 
             return state.orderItems.find(x => x.EditionId === edition.id) ? true : false;
         }
@@ -51,6 +51,7 @@ export class OrderState {
     @Selector() static totalItemsAmount (state:OrderStateModel){ 
         return state.orders?.TotalItemsAmount;
     }
+
 
     @Action(AddOrderItem)
     addOrderItem(ctx: StateContext<OrderStateModel>, action : AddOrderItem){
@@ -97,6 +98,7 @@ export class OrderState {
        ctx.patchState(contex);
     }
 
+
     @Action(CreateOrder)
     createOrder(ctx: StateContext<OrderStateModel>, action : CreateOrder){
         debugger;
@@ -107,10 +109,17 @@ export class OrderState {
             )
         );  
     }
+    @Action(UpdateOrder)
+    updateOrder(ctx: StateContext<OrderStateModel>, action : UpdateOrder){
+        debugger;
+        return this.orderService.updateOrderStatus(action.params);  
+    }
 
     @Action(RemoveOrder)
     removeOrder(ctx: StateContext<OrderStateModel>, action : RemoveOrder){
-       ctx.setState({orderId:0,orderItems: [],orders:null});
+        //To Do : Rename to "Clean Cart"
+        var contex = ctx.getState();
+        ctx.setState({orderId:0,orderItems: [],orders:contex.orders});
     }
 
     @Action(GetOrders)

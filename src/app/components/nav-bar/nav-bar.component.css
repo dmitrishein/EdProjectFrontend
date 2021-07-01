@@ -1,5 +1,9 @@
+
 mat-toolbar {
     background-color: #1976d2;
+}
+::ng-deep .menu-without-scroll {
+    overflow: hidden !important;
 }
 .logo {
    color :white;
@@ -17,3 +21,4 @@ mat-toolbar {
     padding-right: 10px;
     color: white;
 }
+

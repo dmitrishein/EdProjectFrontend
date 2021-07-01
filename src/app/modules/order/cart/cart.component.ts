@@ -4,7 +4,7 @@ import { OrderItem } from 'src/app/shared/models/order';
 import { CreateOrder, DecreaseOrderItemCount, IncreaseOrderItemCount, RemoveOrder, RemoveOrderItem } from 'src/app/store/actions/order.action';
 import { OrderState } from 'src/app/store/states/order.state';
 import { OrderService } from 'src/app/shared/services/order.service';
-import {MatTable} from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 
 
 @Component({
@@ -20,7 +20,8 @@ export class CartComponent implements OnInit {
   isLoggedIn$ = this.store.select(ourState => ourState.account.loggedIn);
   displayedColumns: string[] = ['Id', 'Title', 'Price', 'Count','Total'];
   @ViewChild(MatTable) table?: MatTable<OrderItem>;
-  constructor(private store : Store, private orderService : OrderService) { 
+  
+  constructor(private store : Store) { 
     this.store.select(OrderState.orderedItems).subscribe(
       (res) => {
         this.orderItems = res;
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit {
     );
     this.table?.renderRows();
   }
+
   removeItem(editId : number){
     this.store.dispatch(new RemoveOrderItem(editId));
     this.table?.renderRows();
@@ -55,10 +57,8 @@ export class CartComponent implements OnInit {
           this.store.select(OrderState.orderId).subscribe(
            (id)=>{
              if(id!= 0){
-
-             alert("Order successful created "+ id)
+               //To Do : displayed Order ID
             }
-             this.store.dispatch(new RemoveOrder());
             }
           )
         },
@@ -66,10 +66,12 @@ export class CartComponent implements OnInit {
 
         }
       )
+      this.store.dispatch(new RemoveOrder());
     }
   })
 
   handler.open({
+    email : this.store.selectSnapshot(state => state.account.user.email),
     name: 'Book Store',
     description: 'Your checkout',
     amount: sum * 100
@@ -77,7 +79,6 @@ export class CartComponent implements OnInit {
 
   }
 
-  
 
   ngOnInit(): void {
   }

@@ -31,13 +31,17 @@ import { JwPaginationModule } from 'jw-angular-pagination';
 import { OrderState } from './store/states/order.state';
 import { OrderModule } from './modules/order/order.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatMenuModule} from '@angular/material/menu';
+import { FormsModule } from '@angular/forms';
+
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,10 +53,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     NgxsLoggerPluginModule.forRoot(),
     NgxPaginationModule,
     AccountModule,
+    FormsModule,
     EditionModule,
+    MatMenuModule,
     MatPaginatorModule,
     UserModule,
     OrderModule,
+    MatBadgeModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
