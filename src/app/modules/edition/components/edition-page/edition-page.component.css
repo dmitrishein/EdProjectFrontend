@@ -1,6 +1,6 @@
 .editions-contatiner{
     display: flexbox;
-    height: 80%;
+    height: 56%;
     width: 75%;
     float: right;
     background-color:white;
@@ -9,6 +9,7 @@
 
 .paginator{
     padding-bottom: 20px;
+    margin-bottom: 50%;
 }
 
 .filter-side { 

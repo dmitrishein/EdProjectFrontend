@@ -5,6 +5,7 @@ import { Edition} from '../../../../shared/models/edition'
 import { EditionState} from 'src/app/store/states/edition.state';
 import { AddOrderItem ,RemoveOrderItem } from 'src/app/store/actions/order.action';
 import { OrderState } from 'src/app/store/states/order.state';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { OrderState } from 'src/app/store/states/order.state';
 export class EditionDetailComponent implements OnInit {
   selectedEdition$ !: Edition;
 
-  constructor(private route : ActivatedRoute, private store:Store) { }
+  constructor(private toast : ToastrService,private route : ActivatedRoute, private store:Store) { }
 
   ngOnInit(): void {
      this.getEdition();
@@ -29,9 +30,11 @@ export class EditionDetailComponent implements OnInit {
   }
   addToCart(edit:Edition){
     this.store.dispatch(new AddOrderItem(edit));
+    this.toast.success(`"${edit.title}" added to cart`)
   }
-  removeFromCart(editId : number){
-    this.store.dispatch(new RemoveOrderItem(editId));
+  removeFromCart(edit : Edition){
+    this.store.dispatch(new RemoveOrderItem(edit.id));
+    this.toast.error(`"${edit.title}" removed from cart`)
   }
   getEdition(){
     const id = Number(this.route.snapshot.paramMap.get('id'));

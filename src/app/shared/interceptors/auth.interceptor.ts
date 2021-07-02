@@ -1,30 +1,31 @@
 import { Injectable } from '@angular/core'
 import { Store } from '@ngxs/store';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry, tap} from 'rxjs/operators';
+import { EMPTY, Observable, throwError } from 'rxjs';
+import { catchError} from 'rxjs/operators';
 import { Logout, TokenRefresh } from '../../store/actions/account.actions';
-import { Router } from '@angular/router';
-import { EMPTY } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable()
 
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private store : Store) {  }
+    constructor(private toast : ToastrService,private store : Store) {  }
 
     intercept(req : HttpRequest<any>, next : HttpHandler) : Observable<HttpEvent<any>> {
      
       return next.handle(req)
         .pipe(
           catchError((error: HttpErrorResponse) => {
+          //if access token expired
           if (error.status === 401) {
             this.store.dispatch(new TokenRefresh());
           }
+          //if refresh token expired
           if(error.status === 403) {
-             this.store.dispatch(new Logout()); 
+             this.store.dispatch(new Logout());
           }
-          return throwError(error);
+          return next.handle(req);
         }
       )
     )

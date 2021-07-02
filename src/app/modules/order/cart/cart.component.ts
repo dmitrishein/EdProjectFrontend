@@ -5,6 +5,8 @@ import { CreateOrder, DecreaseOrderItemCount, IncreaseOrderItemCount, RemoveOrde
 import { OrderState } from 'src/app/store/states/order.state';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { MatTable } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class CartComponent implements OnInit {
   displayedColumns: string[] = ['Id', 'Title', 'Price', 'Count','Total'];
   @ViewChild(MatTable) table?: MatTable<OrderItem>;
   
-  constructor(private store : Store) { 
+  constructor(private store : Store, private toast : ToastrService,private router : Router) { 
     this.store.select(OrderState.orderedItems).subscribe(
       (res) => {
         this.orderItems = res;
@@ -54,20 +56,13 @@ export class CartComponent implements OnInit {
     source: async (source: any) => {
       this.store.dispatch(new CreateOrder({SourceId:source.id,OrderItems:this.orderItems})).subscribe(
         () => {     
-          this.store.select(OrderState.orderId).subscribe(
-           (id)=>{
-             if(id!= 0){
-               //To Do : displayed Order ID
-            }
-            }
-          )
+          this.router.navigate(["/editions"]);
         },
-        (err) => {
-
-        }
-      )
-      this.store.dispatch(new RemoveOrder());
-    }
+        (err)=>{
+          debugger;
+          this.router.navigate(["/editions"]);
+        })
+      }
   })
 
   handler.open({

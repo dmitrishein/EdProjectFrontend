@@ -47,6 +47,7 @@
 
 <!-- Container with editions -->
 <div class="editions-contatiner">
+<pagination-controls class="paginator" (pageChange)="pageChanged($event)"></pagination-controls>
 <mat-grid-list cols="4" rowHeight="1:1.6">
     <mat-grid-tile *ngFor="let edition of editionList | paginate: { itemsPerPage:pageParams.ElementsPerPage, currentPage:pageParams.CurrentPageNumber,totalItems: totalItemsCount  }">
       <mat-card>
@@ -64,7 +65,7 @@
               <mat-icon>add_shopping_cart</mat-icon>
               Add to cart
             </button>
-            <button *ngIf="isInCart(edition)" (click)="removeFromCart(edition.id)" mat-button>
+            <button *ngIf="isInCart(edition)" (click)="removeFromCart(edition)" mat-button>
               <mat-icon>done</mat-icon>
               Added to cart
             </button>
@@ -72,9 +73,6 @@
       </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
-
-<pagination-controls class="paginator" (pageChange)="pageChanged($event)"></pagination-controls>
-
 </div>
 
 <!-- Container with editions -->

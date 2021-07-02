@@ -14,7 +14,6 @@ export class UserGuard implements CanActivate {
         let isLoggedIn$!:Boolean;
         this._store.select(ourState => ourState.account.loggedIn).subscribe((res)=>{
             if(res){
-                console.log(res);
                 this.router.navigate(['/editions']);
                 return of(false)
             }

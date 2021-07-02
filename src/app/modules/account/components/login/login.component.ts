@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { GetUsersData, Login, Logout } from '../../../../store/actions/account.actions';
-import { Router } from '@angular/router';
+import { Login } from '../../../../store/actions/account.actions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,19 +20,12 @@ export class LoginComponent implements OnInit {
       password: new FormControl('',[Validators.required]),
   });
 
-  constructor(private store : Store) { }
+  constructor(private store : Store, private toast : ToastrService) { }
   ngOnInit(): void {
   }
 
   login()
   {
-    this.store.dispatch(new Login(this.loginForm.value))
-    .subscribe(
-      () => {
-      },
-      (error) => {
-        alert(error.error);
-      } 
-    );
+    this.store.dispatch(new Login(this.loginForm.value));
   }  
 }

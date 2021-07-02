@@ -8,6 +8,8 @@ import { AddOrderItem, CreateOrder, DecreaseOrderItemCount, GetOrders, IncreaseO
 import { OrderService } from 'src/app/shared/services/order.service';
 import { Edition } from 'src/app/shared/models/edition';
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 export interface OrderStateModel {
     orderId : number,
@@ -27,7 +29,7 @@ export interface OrderStateModel {
 @Injectable()
 export class OrderState {
 
-    constructor(private orderService:OrderService) {
+    constructor(private orderService:OrderService, private toast : ToastrService, private router : Router) {
     }
 
     @Selector() static orders (state:OrderStateModel){
@@ -38,6 +40,9 @@ export class OrderState {
     }
     @Selector() static orderedItems (state:OrderStateModel){ 
         return state.orderItems;
+    }
+    @Selector() static orderedItemsQuantity (state:OrderStateModel){ 
+        return state.orderItems.length;
     }
     @Selector() static checkoutPrice (state:OrderStateModel){ 
         const sum = state.orderItems.reduce((sum,current) => sum + current.OrderAmount, 0)
@@ -101,18 +106,28 @@ export class OrderState {
 
     @Action(CreateOrder)
     createOrder(ctx: StateContext<OrderStateModel>, action : CreateOrder){
-        debugger;
+        ctx.dispatch(new RemoveOrder());
         return this.orderService.createPayment(action.params).pipe(
             tap((result) => { 
-              ctx.patchState({ orderId : result })
-            }
-            )
+            this.toast.success(`${result} was created`),
+            ctx.patchState({ orderId : result });
+            },
+            (err)=>{this.toast.error("ty pidor")})
         );  
     }
     @Action(UpdateOrder)
     updateOrder(ctx: StateContext<OrderStateModel>, action : UpdateOrder){
         debugger;
-        return this.orderService.updateOrderStatus(action.params);  
+        return this.orderService.updateOrderStatus(action.params).pipe(
+            tap(() =>{
+                this.toast.success(`${action.params.OrderId} was successfully paid`);    
+            },
+            (err) => {
+                debugger;
+                this.router.navigate(["/editions"]);
+                this.toast.error("ty pidor galimou");
+            }
+        ));  
     }
 
     @Action(RemoveOrder)

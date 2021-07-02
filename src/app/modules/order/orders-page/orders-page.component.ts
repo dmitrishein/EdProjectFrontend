@@ -6,6 +6,8 @@ import { GetOrders, RemoveOrder, UpdateOrder } from 'src/app/store/actions/order
 import { OrderState } from 'src/app/store/states/order.state';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 export interface SortType {
   id : number,
@@ -35,7 +37,7 @@ export class OrdersPageComponent implements OnInit {
 
   params !: OrdersPageParamsModel;
 
-  constructor(private store : Store) { 
+  constructor(private store : Store, private toast : ToastrService,private router: Router) { 
     this.params ={
       ElementsPerPage : 5,
       CurrentPageNumber: 1,
@@ -69,14 +71,17 @@ export class OrdersPageComponent implements OnInit {
       key : "pk_test_51IiJzdFHRC0nt9sgERFHWpA1jRn6fz4bRSheVUcCTXdbAFjLQqZFu2mYPmzeCPuVqN5I3fHUNwkTBZO0rZXWCZFD00redMUVSC",
       locale : 'auto',
       source: async (source: any) => {
+        debugger;
         this.store.dispatch(new UpdateOrder({SourceId:source.id,OrderId:orderId})).subscribe(
           () => {
+            debugger;
             this.store.dispatch(new GetOrders(this.params));
           },
-          (err) => {
-  
+          () => {
+            debugger;
+            this.router.navigate(["/editions"]);
           }
-        )
+        );
       }
     })
   

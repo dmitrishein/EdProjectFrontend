@@ -8,6 +8,8 @@ import { GetEditionPage, SetPageParameters } from 'src/app/store/actions/edition
 import { EditionState } from 'src/app/store/states/edition.state';
 import { AddOrderItem ,RemoveOrderItem } from 'src/app/store/actions/order.action';
 import { OrderState } from 'src/app/store/states/order.state';
+import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
+import { ToastrService } from 'ngx-toastr';
 
 export interface Categories {
   id : number,
@@ -49,7 +51,7 @@ export class EditionPageComponent implements OnInit {
   pageParams !: EditionPageParameters;
   totalItemsCount : number = 0;
 
-  constructor(private store : Store, private fb: FormBuilder) {
+  constructor(private toast : ToastrService,private store : Store, private fb: FormBuilder) {
     this.store.select(EditionState.getMaxPrice).subscribe(
       (maxPrice)=>{
         this.maxVal = maxPrice!;
@@ -193,10 +195,11 @@ export class EditionPageComponent implements OnInit {
 
   addToCart(edit:Edition){
     this.store.dispatch(new AddOrderItem(edit));
+    this.toast.success( `"${edit.title}" added to cart`)
   }
-  removeFromCart(editId : number){
-    this.store.dispatch(new RemoveOrderItem(editId));
-
+  removeFromCart(edition : Edition){
+    this.store.dispatch(new RemoveOrderItem(edition.id));
+    this.toast.error( `"${edition.title}" removed from cart`)
   }
   isInCart(edit:Edition):boolean{
     let flag = false;

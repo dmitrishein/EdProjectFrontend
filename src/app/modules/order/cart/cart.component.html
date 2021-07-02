@@ -41,4 +41,5 @@
     <h2 *ngIf="orderItems.length != 0" class="checkout">Checkout: {{priceToCheckOut | number:'1.2-2'}} $</h2>   
     <button mat-button routerLink="/editions">Back To Previous Page</button>
     <button *ngIf="isLoggedIn$ | async" [disabled] = "orderItems.length === 0" [ngStyle]="{'color': orderItems.length != 0? 'white': 'black'}" (click)="onCheckout(priceToCheckOut)" mat-button>Pay Order</button>
+    <button *ngIf="!(isLoggedIn$ | async)" [disabled] = "orderItems.length === 0" [ngStyle]="{'color':'black'}"  mat-button>Make payment can only logged in users</button>
 </div>

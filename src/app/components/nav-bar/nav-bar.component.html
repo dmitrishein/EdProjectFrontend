@@ -24,7 +24,7 @@
       </button>
       <button  class="fancy-button" routerLink="/cart" >
         Cart
-        <mat-icon [matBadge]="cartLength" matBadgeColor="warn">shopping_cart</mat-icon>
+        <mat-icon [matBadge]="cartQuantity | async" matBadgeColor="warn">shopping_cart</mat-icon>
       </button>
     </mat-toolbar>
 </p>

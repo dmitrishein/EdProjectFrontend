@@ -15,7 +15,7 @@ export class PasswordResetComponent implements OnInit {
   errorMessage : string = "";
   constructor(private route : ActivatedRoute,private store : Store, private router : Router) {
     this.isTokenSended = false;
-   }
+  }
 
   ngOnInit(): void {
     if(this.route.snapshot.queryParams['token']){

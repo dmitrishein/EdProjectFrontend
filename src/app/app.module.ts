@@ -25,7 +25,6 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
-import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { EditionState } from './store/states/edition.state';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { OrderState } from './store/states/order.state';
@@ -34,6 +33,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatMenuModule} from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { ErrorsInterceptor } from './shared/interceptors/errors.interceptor';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 
 
 
@@ -45,6 +47,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
+    ToastrModule.forRoot(),
     NgxsModule.forRoot([AccountState,EditionState,OrderState]),
     NgxsStoragePluginModule.forRoot({
       key:[AccountState, EditionState, OrderState],
@@ -82,7 +85,12 @@ import { FormsModule } from '@angular/forms';
       provide: HTTP_INTERCEPTORS,
       multi : true,
       useClass: AuthInterceptor
-    }
+    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   multi : true,
+    //   useClass: ErrorsInterceptor
+    // }
   ],
   bootstrap: [AppComponent]
 })

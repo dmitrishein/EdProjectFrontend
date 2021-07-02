@@ -11,15 +11,11 @@ import { Logout } from '../../store/actions/account.actions';
 
 export class NavBarComponent implements OnInit {
   isLoggedIn$ = this._store.select(ourState => ourState.account.loggedIn);
-  cartLength !: number;
-
+  cartQuantity = this._store.select(OrderState.orderedItemsQuantity);
   constructor(private _store : Store) {
   }
 
   ngOnInit(): void {
-    this._store.select(OrderState.orderedItems).subscribe(
-      items => this.cartLength = items.length
-    )
   } 
   
   logout() {

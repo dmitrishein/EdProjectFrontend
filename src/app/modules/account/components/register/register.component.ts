@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Registration } from 'src/app/store/actions/account.actions';
 import { AccountService } from '../../../../shared/services/account.service';
@@ -13,7 +14,6 @@ import { AccountService } from '../../../../shared/services/account.service';
 })
 export class RegisterComponent implements OnInit {
   isLoggedIn$!: Observable<boolean>;
-  errorMessage : string = "";
   registerForm: FormGroup = new FormGroup(
   {
     username: new FormControl('',[Validators.required]),
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
     confirmPassword: new FormControl('',[Validators.required]),
   });
 
-  constructor(private accService : AccountService, private router : Router, private store : Store) { }
+  constructor(private toast : ToastrService, private store : Store,private router : Router) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +32,5 @@ export class RegisterComponent implements OnInit {
   registration()
   {
     this.store.dispatch(new Registration(this.registerForm.value));
-
   }  
 }
