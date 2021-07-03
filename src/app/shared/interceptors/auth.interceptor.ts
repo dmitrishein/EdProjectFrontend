@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 
-export class AuthInterceptor implements HttpInterceptor {
+export class ErrorsInterceptor implements HttpInterceptor {
     constructor(private toast : ToastrService,private store : Store) {  }
 
     intercept(req : HttpRequest<any>, next : HttpHandler) : Observable<HttpEvent<any>> {
@@ -25,7 +25,13 @@ export class AuthInterceptor implements HttpInterceptor {
           if(error.status === 403) {
              this.store.dispatch(new Logout());
           }
-          return next.handle(req);
+          if (error.status === 400) {
+            debugger;
+            this.toast.error(error.error,"Auth");
+            return throwError(EMPTY);
+          }else{
+            return next.handle(req);
+          }
         }
       )
     )

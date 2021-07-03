@@ -27,8 +27,13 @@ export class PasswordResetComponent implements OnInit {
     this.store.dispatch(new ResetPassword(email));
   }
   changePassword(newPassword:string){
+    debugger;
     const token = this.route.snapshot.queryParams['token'];
     const email = this.route.snapshot.queryParams['email'];
-    this.store.dispatch(new ChangePassword(email,token,newPassword));
+    this.store.dispatch(new ChangePassword(email,token,newPassword)).subscribe(
+      () => {
+        this.router.navigate(['/editions'])
+      }
+    );
   }
 }

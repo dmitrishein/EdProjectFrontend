@@ -42,15 +42,13 @@ export class AccountState {
 
   @Action(Login)
   login(ctx: StateContext<AccountStateModel>, action: Login) { 
-    debugger
     return this.authService.login(action.payload).pipe(
       tap((result) => { 
-        ;
         ctx.setState({ tokens : result, loggedIn : true ,user: null }),
         localStorage.setItem("refreshToken", result.refreshToken);
         ctx.dispatch(new GetUsersData(action.payload.email))
-      }
-     )
+        this.router.navigate(['/editions']);
+      })
     );    
   }
 
@@ -73,11 +71,11 @@ export class AccountState {
 
   @Action(Registration)
   registration(ctx: StateContext<AccountStateModel>,action:Registration){
-    return this.authService.register(action.payload).subscribe(
-      () => {
+    return this.authService.register(action.payload).pipe(
+      tap(() => {
         this.toast.success("Confirm your email to login","Registration Successful");
         this.router.navigate(['/editions'])
-      }
+      })
     );
   }
 
@@ -125,15 +123,19 @@ export class AccountState {
   }
   @Action(ResetPassword)
   resetPassword(ctx: StateContext<AccountStateModel>,action:ResetPassword){
-    this.authService.resetPass(action.email).subscribe(
-      () => { this.toast.success("Check your email to continue","Reset Link Sended");this.router.navigate(['/editions'])}
+    this.authService.resetPass(action.email).pipe(
+      tap(() => { 
+        this.toast.success("Check your email to continue","Reset Link Sended");
+        this.router.navigate(['/editions'])
+      })
     );
   }
 
   @Action(ChangePassword)
   changePassword(ctx: StateContext<AccountStateModel>,action:ChangePassword){
+    debugger;
     this.authService.changePass(action.email,action.token,action.newPassword).subscribe(
-      () => {this.toast.success("Now Login with new Password","Password Successfully Changed");this.router.navigate(['/editions'])}
+      () => {this.toast.success("Now Login with new Password","Password Successfully Changed");},
     );
   }
 

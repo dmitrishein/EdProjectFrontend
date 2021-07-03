@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Login } from '../../../../store/actions/account.actions';
-import { ToastrService } from 'ngx-toastr';
+import { GetUsersData, Login } from '../../../../store/actions/account.actions';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { AccountState } from 'src/app/store/states/account.state';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +22,16 @@ export class LoginComponent implements OnInit {
       password: new FormControl('',[Validators.required]),
   });
 
-  constructor(private store : Store, private toast : ToastrService) { }
+  constructor(private store : Store, private router : Router) { }
   ngOnInit(): void {
   }
 
   login()
   {
-    this.store.dispatch(new Login(this.loginForm.value));
+    debugger;
+    this.store.dispatch(new Login(this.loginForm.value)).subscribe(
+      ()=>{
+      }
+    );
   }  
 }

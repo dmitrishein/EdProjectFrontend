@@ -27,7 +27,8 @@ export class AccountService {
     return this.http.post('https://localhost:44386/Account/ResetPassword',temp, { headers:{'Content-Type' : 'application/json'} });
   }
   changePass(email : string, token:string, newPassword:string) {
-    return this.http.post('https://localhost:44386/Account/ChangePassword',{email,token,newPassword});
+    debugger;
+    return this.http.post('https://localhost:44386/Account/ChangePassword',{email,token,newPassword}, { headers:{'Content-Type' : 'application/json'} });
   }
   refreshToken(refreshToken : string) : Observable<TokenPair> {
     return this.http.post<TokenPair>('https://localhost:44386/Account/RefreshToken',{refreshToken});

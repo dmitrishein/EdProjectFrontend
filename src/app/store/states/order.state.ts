@@ -111,21 +111,14 @@ export class OrderState {
             tap((result) => { 
             this.toast.success(`${result} was created`),
             ctx.patchState({ orderId : result });
-            },
-            (err)=>{this.toast.error("ty pidor")})
+            })
         );  
     }
     @Action(UpdateOrder)
     updateOrder(ctx: StateContext<OrderStateModel>, action : UpdateOrder){
-        debugger;
         return this.orderService.updateOrderStatus(action.params).pipe(
             tap(() =>{
                 this.toast.success(`${action.params.OrderId} was successfully paid`);    
-            },
-            (err) => {
-                debugger;
-                this.router.navigate(["/editions"]);
-                this.toast.error("ty pidor galimou");
             }
         ));  
     }

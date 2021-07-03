@@ -38,3 +38,4 @@ export interface UpdateUserModel{
     email : string;
     username : string;
 }
+

@@ -74,12 +74,7 @@ export class OrdersPageComponent implements OnInit {
         debugger;
         this.store.dispatch(new UpdateOrder({SourceId:source.id,OrderId:orderId})).subscribe(
           () => {
-            debugger;
             this.store.dispatch(new GetOrders(this.params));
-          },
-          () => {
-            debugger;
-            this.router.navigate(["/editions"]);
           }
         );
       }

@@ -30,12 +30,11 @@ import { JwPaginationModule } from 'jw-angular-pagination';
 import { OrderState } from './store/states/order.state';
 import { OrderModule } from './modules/order/order.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatBadgeModule} from '@angular/material/badge';
+import { MatMenuModule} from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { ErrorsInterceptor } from './shared/interceptors/errors.interceptor';
-import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { ErrorsInterceptor } from './shared/interceptors/auth.interceptor';
 
 
 
@@ -84,13 +83,8 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       multi : true,
-      useClass: AuthInterceptor
-    },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   multi : true,
-    //   useClass: ErrorsInterceptor
-    // }
+      useClass: ErrorsInterceptor
+    }
   ],
   bootstrap: [AppComponent]
 })
