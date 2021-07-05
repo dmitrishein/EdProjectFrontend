@@ -123,11 +123,12 @@ export class AccountState {
   }
   @Action(ResetPassword)
   resetPassword(ctx: StateContext<AccountStateModel>,action:ResetPassword){
-    this.authService.resetPass(action.email).pipe(
-      tap(() => { 
+    debugger;
+    this.authService.resetPass(action.email).subscribe(
+      () => { 
         this.toast.success("Check your email to continue","Reset Link Sended");
         this.router.navigate(['/editions'])
-      })
+      }
     );
   }
 

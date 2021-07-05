@@ -5,12 +5,13 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError} from 'rxjs/operators';
 import { Logout, TokenRefresh } from '../../store/actions/account.actions';
 import { ToastrService } from 'ngx-toastr';
+import { NgZone } from '@angular/core';
 
 
 @Injectable()
 
 export class ErrorsInterceptor implements HttpInterceptor {
-    constructor(private toast : ToastrService,private store : Store) {  }
+    constructor(private toast : ToastrService,private store : Store, private zone: NgZone) {  }
 
     intercept(req : HttpRequest<any>, next : HttpHandler) : Observable<HttpEvent<any>> {
      
@@ -27,8 +28,8 @@ export class ErrorsInterceptor implements HttpInterceptor {
           }
           if (error.status === 400) {
             debugger;
-            this.toast.error(error.error,"Auth");
-            return throwError(EMPTY);
+            this.zone.run(() => this.toast.error(error.error,"Error"));
+            return throwError(error);
           }else{
             return next.handle(req);
           }
