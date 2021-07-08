@@ -15,6 +15,7 @@ import { OrdersPageComponent } from './modules/order/orders-page/orders-page.com
 @NgModule({
   imports: [
     RouterModule.forRoot([
+      { path: '', redirectTo: 'editions', pathMatch: 'full' },
       { path: 'editions',component: EditionPageComponent },
       { path: 'login',canActivate:[UserGuard], component: LoginComponent },
       { path: 'registration', canActivate:[UserGuard],component: RegisterComponent },

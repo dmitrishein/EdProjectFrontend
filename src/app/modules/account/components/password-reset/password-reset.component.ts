@@ -26,6 +26,7 @@ export class PasswordResetComponent implements OnInit {
   resetPassword(email:string){
     this.store.dispatch(new ResetPassword(email));
   }
+  
   changePassword(newPassword:string){
     debugger;
     const token = this.route.snapshot.queryParams['token'];

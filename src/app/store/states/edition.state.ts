@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { EditionPageResponseModel, EditionPageParameters } from "src/app/shared/models/edition";
-import { GetDefaultEditionPage, GetEditionPage, SetPageParameters} from '../actions/edition.action';
+import { GetEditionPage, SetPageParameters} from '../actions/edition.action';
 import { EditionService } from 'src/app/shared/services/edition.service';
 
 export interface EditionStateModel {

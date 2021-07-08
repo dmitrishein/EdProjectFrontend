@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CreateOrderModel, OrdersPageParamsModel, OrdersPageResponseModel, UpdateOrderModel } from '../models/order';
 
@@ -9,7 +8,7 @@ import { CreateOrderModel, OrdersPageParamsModel, OrdersPageResponseModel, Updat
 })
 export class OrderService {
   constructor(private http:HttpClient) { }
-  createPayment(pageParams:CreateOrderModel){
+  createOrder(pageParams:CreateOrderModel){
     return this.http.post<number>("https://localhost:44386/Order/CreateOrder", pageParams);
   }
   updateOrderStatus(params : UpdateOrderModel){

@@ -33,7 +33,6 @@ export class AccountService {
   refreshToken(refreshToken : string) : Observable<TokenPair> {
     return this.http.post<TokenPair>('https://localhost:44386/Account/RefreshToken',{refreshToken});
   }
-
   logout(){
     return this.http.post('https://localhost:44386/Account/Logout',"");
   }

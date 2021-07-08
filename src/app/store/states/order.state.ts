@@ -107,7 +107,7 @@ export class OrderState {
     @Action(CreateOrder)
     createOrder(ctx: StateContext<OrderStateModel>, action : CreateOrder){
         ctx.dispatch(new RemoveOrder());
-        return this.orderService.createPayment(action.params).pipe(
+        return this.orderService.createOrder(action.params).pipe(
             tap((result) => { 
             this.toast.success(`${result} was created`),
             ctx.patchState({ orderId : result });

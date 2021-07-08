@@ -34,7 +34,7 @@ import { MatBadgeModule} from '@angular/material/badge';
 import { MatMenuModule} from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { ErrorsInterceptor } from './shared/interceptors/auth.interceptor';
+import { ErrorsInterceptor } from './shared/interceptors/errors.interceptor';
 
 
 

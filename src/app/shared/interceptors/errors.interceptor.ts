@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Store } from '@ngxs/store';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { EMPTY, Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError} from 'rxjs/operators';
 import { Logout, TokenRefresh } from '../../store/actions/account.actions';
 import { ToastrService } from 'ngx-toastr';
