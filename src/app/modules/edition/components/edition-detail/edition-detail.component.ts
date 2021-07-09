@@ -15,8 +15,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditionDetailComponent implements OnInit {
   selectedEdition$ !: Edition;
-
-  constructor(private toast : ToastrService,private route : ActivatedRoute, private store:Store) { }
+  isAvailable : boolean = true;
+  constructor(private toast : ToastrService,private route : ActivatedRoute, private store:Store) { 
+  }
 
   ngOnInit(): void {
      this.getEdition();
@@ -39,7 +40,14 @@ export class EditionDetailComponent implements OnInit {
   getEdition(){
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.store.select(EditionState.getEditionById).subscribe(
-      (res)=>{this.selectedEdition$ = res(id)!}
+      (res)=>{
+        debugger;
+        this.selectedEdition$ = res(id)!;
+        if(this.selectedEdition$.status === 'NotAvailable')
+        {
+          this.isAvailable = false;
+        }
+      }
     )
   }
 

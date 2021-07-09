@@ -20,21 +20,25 @@
             <p>Edition Type: {{ selectedEdition$.type}} </p>
         </div>
         <div>
-            <p>Price: {{ selectedEdition$.price}} </p>
+            <p>Price: {{ selectedEdition$.price}}$ </p>
         </div>
         <div>
             <p>Status: {{ selectedEdition$.status}} </p>
         </div>
-        <button *ngIf="!isInCart(selectedEdition$)" (click)="addToCart(selectedEdition$)" mat-button>
-            <mat-icon>add_shopping_cart</mat-icon>
-            Add to cart
-          </button>
-        <button *ngIf="isInCart(selectedEdition$)" (click)="removeFromCart(selectedEdition$)" mat-button>
-            <mat-icon>done</mat-icon>
-            In cart
-          </button>
+        <div *ngIf="isAvailable">
+            <button *ngIf="!isInCart(selectedEdition$)" (click)="addToCart(selectedEdition$)" mat-button>
+                <mat-icon>add_shopping_cart</mat-icon>
+                Add to cart
+            </button>
+            <button *ngIf="isInCart(selectedEdition$)" (click)="removeFromCart(selectedEdition$)" mat-button>
+                <mat-icon>done</mat-icon>
+                In cart
+            </button>
+        </div>
+        <div *ngIf="!isAvailable">
+            <button [disabled]="true" mat-button>Not Available </button>
+        </div>
     </mat-card-content>
     <h2>Descriprion:</h2>
         <p> {{selectedEdition$.description}}</p>
-
   </mat-card>

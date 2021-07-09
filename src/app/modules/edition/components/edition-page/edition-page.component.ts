@@ -28,7 +28,7 @@ export interface SortType {
 })
 export class EditionPageComponent implements OnInit {
  
-
+//TODO : add more CONSTANTS
 
   sortTypeList : SortType[] = [
     {id : 1, name : "Price : From Low to High", isReversed : false},
@@ -54,19 +54,21 @@ export class EditionPageComponent implements OnInit {
   constructor(private toast : ToastrService,private store : Store, private fb: FormBuilder) {
     this.store.select(EditionState.getMaxPrice).subscribe(
       (maxPrice)=>{
+        debugger;
         this.maxVal = maxPrice!;
         this.store.select(EditionState.getMinPrice).subscribe(
           (minPrice)=>{
             this.minVal = minPrice!;
             if(this.minVal === undefined || this.maxVal === undefined){
               this.sliderOptions = {
-                floor: 1,
-                ceil: 2034,
+                floor: 0.5,
+                ceil: 20000.23,
+                step: 0.5,
                 translate: (value: number, label: LabelType): string => {
                   switch (label) {
-                    case LabelType.Floor:
+                    case LabelType.Low:
                       return "<b>Min price:</b> $" + value;
-                    case LabelType.Ceil:
+                    case LabelType.High:
                       return "<b>Max price:</b> $" + value;
                     default:
                       return "$" + value;
@@ -77,11 +79,12 @@ export class EditionPageComponent implements OnInit {
               this.sliderOptions = {
                 floor: this.minVal,
                 ceil: this.maxVal,
+                step: 0.5,
                 translate: (value: number, label: LabelType): string => {
                   switch (label) {
-                    case LabelType.Floor:
+                    case LabelType.Low:
                       return "<b>Min price:</b> $" + value;
-                    case LabelType.Ceil:
+                    case LabelType.High:
                       return "<b>Max price:</b> $" + value;
                     default:
                       return "$" + value;
@@ -96,7 +99,6 @@ export class EditionPageComponent implements OnInit {
     this.store.select(EditionState.getPageParams).subscribe(
       (res)=> { 
       if(res === null){
-        debugger;
         this.pageParams = {
           ElementsPerPage : 5,
           CurrentPageNumber : 1,
@@ -112,10 +114,10 @@ export class EditionPageComponent implements OnInit {
           magazine: true,
           newspaper: true
         })
-        this.minVal = this.sliderOptions.floor!;
-        this.maxVal = this.sliderOptions.ceil!;
+        // this.minVal = this.sliderOptions.floor!;
+        // this.maxVal = this.sliderOptions.ceil!;
         this.selectedSize = this.pageSizes[0];
-        this.selectedSortType = this.sortTypeList.find(x => x.id === 1 && x.isReversed === false)!;
+        this.selectedSortType = this.sortTypeList.find(x => x.id === 1 && !x.isReversed)!;
       }
       else {
         this.pageParams = res!;
@@ -153,8 +155,8 @@ export class EditionPageComponent implements OnInit {
       magazine: true,
       newspaper: true
     })
-    this.maxVal= this.store.selectSnapshot(EditionState.getMaxPrice)!;
-    this.minVal = this.store.selectSnapshot(EditionState.getMinPrice)!;
+    this.maxVal= 1000;
+    this.minVal = 1;
     this.pageParams.MaxUserPrice = this.maxVal;
     this.pageParams.MinUserPrice = this.minVal;
     this.pageParams.EditionTypes = [1,2,3];

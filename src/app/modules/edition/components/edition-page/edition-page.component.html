@@ -58,17 +58,22 @@
           </mat-card-header>
           <img height="300px" width="300px" src="https://img.icons8.com/emoji/452/closed-book.png" alt="edition" routerLink="/detail/{{edition.id}}">
           <mat-card-content>
-            <p class="price">{{edition.price | number:'1.2-2'}}$</p>
+            <p class="price">Price : {{edition.price | number:'1.2-2'}}$</p>
           </mat-card-content>
           <mat-card-actions>
-            <button *ngIf="!isInCart(edition)" (click)="addToCart(edition)" mat-button>
-              <mat-icon>add_shopping_cart</mat-icon>
-              Add to cart
-            </button>
-            <button *ngIf="isInCart(edition)" (click)="removeFromCart(edition)" mat-button>
-              <mat-icon>done</mat-icon>
-              Added to cart
-            </button>
+            <div *ngIf="edition.status === 'Available'" > 
+              <button *ngIf="!isInCart(edition)" (click)="addToCart(edition)" mat-button>
+                <mat-icon>add_shopping_cart</mat-icon>
+                Add to cart
+              </button>
+              <button *ngIf="isInCart(edition)" (click)="removeFromCart(edition)" mat-button>
+                <mat-icon>done</mat-icon>
+                Added to cart
+              </button>
+            </div>
+            <div *ngIf="edition.status != 'Available'" > 
+                <h3>Out of Stock</h3>
+            </div>
           </mat-card-actions>
       </mat-card>
   </mat-grid-tile>
