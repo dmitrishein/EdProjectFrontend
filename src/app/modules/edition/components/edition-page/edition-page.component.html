@@ -39,7 +39,7 @@
   <p><mat-checkbox formControlName="magazine">Magazine</mat-checkbox></p>
   <p><mat-checkbox formControlName="newspaper">Newspaper</mat-checkbox></p>
 </section>
- <ngx-slider class ="price-selector-slider" [(value)]="minVal" [(highValue)]="maxVal" [options]="sliderOptions"></ngx-slider>
+ <ngx-slider class ="price-selector-slider" [(value)]="minVal" [(highValue)]="maxVal" [options]="sliderOptions" (mouseup)="sliderEvent()"></ngx-slider>
  <button (click)="filterByCategories()">Apply filter</button>
  <button (click)="resetFilter()">Reset filter</button>
 </div>

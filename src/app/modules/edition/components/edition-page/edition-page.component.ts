@@ -10,6 +10,7 @@ import { AddOrderItem ,RemoveOrderItem } from 'src/app/store/actions/order.actio
 import { OrderState } from 'src/app/store/states/order.state';
 import { NavBarComponent } from 'src/app/components/nav-bar/nav-bar.component';
 import { ToastrService } from 'ngx-toastr';
+import { min, tap } from 'rxjs/operators';
 
 export interface Categories {
   id : number,
@@ -43,59 +44,40 @@ export class EditionPageComponent implements OnInit {
   selectedCategories = new FormControl();
   selectedSortType !: SortType;
   searchString : string = "";
+  isSliderChanged : boolean = false;
 
   minVal !: number;
   maxVal !: number;
+
 
   editionList !: Edition[];
   pageParams !: EditionPageParameters;
   totalItemsCount : number = 0;
 
   constructor(private toast : ToastrService,private store : Store, private fb: FormBuilder) {
-    this.store.select(EditionState.getMaxPrice).subscribe(
-      (maxPrice)=>{
-        debugger;
-        this.maxVal = maxPrice!;
-        this.store.select(EditionState.getMinPrice).subscribe(
-          (minPrice)=>{
-            this.minVal = minPrice!;
-            if(this.minVal === undefined || this.maxVal === undefined){
-              this.sliderOptions = {
-                floor: 0.5,
-                ceil: 20000.23,
-                step: 0.5,
-                translate: (value: number, label: LabelType): string => {
-                  switch (label) {
-                    case LabelType.Low:
-                      return "<b>Min price:</b> $" + value;
-                    case LabelType.High:
-                      return "<b>Max price:</b> $" + value;
-                    default:
-                      return "$" + value;
-                  }
-                }
-              };
-            }else {
-              this.sliderOptions = {
-                floor: this.minVal,
-                ceil: this.maxVal,
-                step: 0.5,
-                translate: (value: number, label: LabelType): string => {
-                  switch (label) {
-                    case LabelType.Low:
-                      return "<b>Min price:</b> $" + value;
-                    case LabelType.High:
-                      return "<b>Max price:</b> $" + value;
-                    default:
-                      return "$" + value;
-                  }
-                }
-              };
-            }
+      this.store.select(EditionState.getMaxPrice).subscribe(
+        (maxRes)=>{
+          if(!this.isSliderChanged){
+            this.maxVal = maxRes!;
+            this.setSliderOptions(this.minVal,maxRes!);
           }
-        )
-      }
-    )
+          else{
+            this.maxVal = this.pageParams.MaxUserPrice;
+          }
+        }
+      )
+      this.store.select(EditionState.getMinPrice).subscribe(
+        (minRes)=>{
+          if(!this.isSliderChanged){
+            this.minVal = minRes!;
+            this.setSliderOptions(minRes!,this.maxVal);
+          }
+          else{
+            this.minVal = this.pageParams.MinUserPrice;
+          }
+        }
+      )
+    //init page params
     this.store.select(EditionState.getPageParams).subscribe(
       (res)=> { 
       if(res === null){
@@ -103,8 +85,8 @@ export class EditionPageComponent implements OnInit {
           ElementsPerPage : 5,
           CurrentPageNumber : 1,
           SearchString : "",
-          MaxUserPrice : this.sliderOptions.ceil!,
-          MinUserPrice : this.sliderOptions.floor!,
+          MaxUserPrice : 0.5,
+          MinUserPrice : 20000,
           EditionTypes : [1,2,3],
           SortType : 1,
           IsReversed: false   
@@ -114,28 +96,43 @@ export class EditionPageComponent implements OnInit {
           magazine: true,
           newspaper: true
         })
-        // this.minVal = this.sliderOptions.floor!;
-        // this.maxVal = this.sliderOptions.ceil!;
         this.selectedSize = this.pageSizes[0];
         this.selectedSortType = this.sortTypeList.find(x => x.id === 1 && !x.isReversed)!;
+        return;
       }
-      else {
-        this.pageParams = res!;
-        this.maxVal = this.pageParams.MaxUserPrice,
-        this.minVal = this.pageParams.MinUserPrice
-        this.categories = fb.group({
+      this.pageParams = res!;
+      this.categories = fb.group({
           book: this.pageParams!.EditionTypes[0]===0?false : true,
           magazine: this.pageParams!.EditionTypes[1] === 0 ? false : true,
           newspaper: this.pageParams!.EditionTypes[2] === 0 ? false : true
-        })
-        this.selectedSize = this.pageSizes.filter(x=> x === res.ElementsPerPage)[0];
-        this.selectedSortType = this.sortTypeList.find(x => x.id === res.SortType && x.isReversed === res.IsReversed)!;
-      }      
+      })
+      this.selectedSize = this.pageSizes.filter(x=> x === res.ElementsPerPage)[0];
+      this.selectedSortType = this.sortTypeList.find(x => x.id === res.SortType && x.isReversed === res.IsReversed)!;    
     })
-    
     this.getPage();
+
   }
 
+  sliderEvent(){
+    this.isSliderChanged = true;
+  }
+  setSliderOptions(floor : number, ceil : number){
+    this.sliderOptions = {
+      floor: floor ,
+      ceil: ceil ,
+      step: 0.01,
+      translate: (value: number, label: LabelType): string => {
+        switch (label) {
+          case LabelType.Low:
+            return "<b>Min price:</b> $" + value;
+          case LabelType.High:
+            return "<b>Max price:</b> $" + value;
+          default:
+            return "$" + value;
+        }
+      }
+    }; 
+  }
   filterByCategories(){
     let checks : boolean[] = Object.values(this.categories.value);
     let selectedTypes : number[] = [
@@ -145,47 +142,52 @@ export class EditionPageComponent implements OnInit {
     ]
     this.pageParams.EditionTypes = selectedTypes;
     this.pageParams.CurrentPageNumber = 1;
-    this.pageParams.MinUserPrice = this.minVal;
-    this.pageParams.MaxUserPrice = this.maxVal;
+    if(this.isSliderChanged){
+        this.filterByPrice();
+        return;
+    }
     this.getPage();
   }
+  filterByPrice(){
+    this.pageParams.MinUserPrice = this.minVal,
+    this.pageParams.MaxUserPrice = this.maxVal,
+    this.getPage();
+
+  }
   resetFilter(){
+    this.isSliderChanged = false;
     this.categories = this.fb.group({
       book: true,
       magazine: true,
       newspaper: true
     })
-    this.maxVal= 1000;
-    this.minVal = 1;
-    this.pageParams.MaxUserPrice = this.maxVal;
-    this.pageParams.MinUserPrice = this.minVal;
+    this.pageParams.MaxUserPrice = 20000;
+    this.pageParams.MinUserPrice = 0.5;
     this.pageParams.EditionTypes = [1,2,3];
+    this.maxVal = 20000;
+    this.minVal = 0;
     this.getPage();
   }
   getPage(){
     this.store.dispatch(new SetPageParameters(this.pageParams));
     this.store.dispatch(new GetEditionPage(this.pageParams));
+    
     this.store.select(EditionState.editions).subscribe(
           (editionPage) => {
             this.editionList = editionPage!;
             this.store.select(EditionState.totalItemsAmount).subscribe(
               (res) => {
                 this.totalItemsCount = res!;
-              }
-            )
-
-    })
+            })
+        })
   }
   pageChanged(pagenum : number){
     this.pageParams.CurrentPageNumber = pagenum;
     this.getPage();
   }
   handlePageSizeChange(event:number): void {
-    
     this.pageParams.ElementsPerPage = event;
-    console.log(event)
     this.pageParams.CurrentPageNumber = 1;
-    console.log(this.pageParams);
     this.getPage();
   }
   handlePageSorting(event:SortType): void {
@@ -216,3 +218,4 @@ export class EditionPageComponent implements OnInit {
   }
 
 }
+
