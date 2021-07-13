@@ -77,10 +77,9 @@ export class EditionPageComponent implements OnInit {
           }
         }
       )
-    //init page params
-    this.store.select(EditionState.getPageParams).subscribe(
-      (res)=> { 
-      if(res === null){
+      this.store.select(EditionState.getPageParams).subscribe(
+       (res)=> { 
+       if(res === null){
         this.pageParams = {
           ElementsPerPage : 5,
           CurrentPageNumber : 1,
@@ -99,15 +98,15 @@ export class EditionPageComponent implements OnInit {
         this.selectedSize = this.pageSizes[0];
         this.selectedSortType = this.sortTypeList.find(x => x.id === 1 && !x.isReversed)!;
         return;
-      }
-      this.pageParams = res!;
-      this.categories = fb.group({
-          book: this.pageParams!.EditionTypes[0]===0?false : true,
-          magazine: this.pageParams!.EditionTypes[1] === 0 ? false : true,
-          newspaper: this.pageParams!.EditionTypes[2] === 0 ? false : true
-      })
-      this.selectedSize = this.pageSizes.filter(x=> x === res.ElementsPerPage)[0];
-      this.selectedSortType = this.sortTypeList.find(x => x.id === res.SortType && x.isReversed === res.IsReversed)!;    
+       }
+       this.pageParams = res!;
+       this.categories = fb.group({
+           book: this.pageParams!.EditionTypes[0] != 0,
+           magazine: this.pageParams!.EditionTypes[1] != 0 ,
+           newspaper: this.pageParams!.EditionTypes[2] != 0
+       })
+       this.selectedSize = this.pageSizes.filter(x=> x === res.ElementsPerPage)[0];
+       this.selectedSortType = this.sortTypeList.find(x => x.id === res.SortType && x.isReversed === res.IsReversed)!;    
     })
     this.getPage();
 
@@ -116,6 +115,7 @@ export class EditionPageComponent implements OnInit {
   sliderEvent(){
     this.isSliderChanged = true;
   }
+
   setSliderOptions(floor : number, ceil : number){
     this.sliderOptions = {
       floor: floor ,
@@ -123,9 +123,9 @@ export class EditionPageComponent implements OnInit {
       step: 0.01,
       translate: (value: number, label: LabelType): string => {
         switch (label) {
-          case LabelType.Low:
+          case LabelType.Floor:
             return "<b>Min price:</b> $" + value;
-          case LabelType.High:
+          case LabelType.Ceil:
             return "<b>Max price:</b> $" + value;
           default:
             return "$" + value;
@@ -164,8 +164,6 @@ export class EditionPageComponent implements OnInit {
     this.pageParams.MaxUserPrice = 20000;
     this.pageParams.MinUserPrice = 0.5;
     this.pageParams.EditionTypes = [1,2,3];
-    this.maxVal = 20000;
-    this.minVal = 0;
     this.getPage();
   }
   getPage(){
@@ -179,7 +177,7 @@ export class EditionPageComponent implements OnInit {
               (res) => {
                 this.totalItemsCount = res!;
             })
-        })
+    })
   }
   pageChanged(pagenum : number){
     this.pageParams.CurrentPageNumber = pagenum;
