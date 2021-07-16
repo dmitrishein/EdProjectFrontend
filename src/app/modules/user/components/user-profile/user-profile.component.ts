@@ -4,6 +4,7 @@ import { User } from 'src/app/shared/models/user';
 import { FormControl, FormGroup,Validators} from '@angular/forms';
 import { UpdateUserData } from 'src/app/store/actions/account.actions';
 import { AccountState } from 'src/app/store/states/account.state';
+import { VariablesConstants } from 'src/app/shared/constants/variables-constant';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,7 +15,6 @@ export class UserProfileComponent implements OnInit {
   public userForm!: FormGroup;
   jwtToken ?:string;
   public dataEditEnable : Boolean = false;
-  editMail:boolean = true;
   public errorMessage : string = "";
 
   constructor(private store : Store) {  
@@ -25,9 +25,9 @@ export class UserProfileComponent implements OnInit {
       (payload : User | null ) => {       
         this.userForm = new FormGroup({
           jwt: new FormControl({value: this.jwtToken, disabled : true},[Validators.required]),
-          username: new FormControl({value: payload?.username, disabled : true},[Validators.required]),
-          firstName: new FormControl({value: payload?.fullname.split(" ",1).pop(), disabled : true },[Validators.required]), 
-          lastName: new FormControl({value: payload?.fullname.split(" ").pop(), disabled : true },[Validators.required]), 
+          username: new FormControl({value: payload?.username, disabled : true},Validators.compose([Validators.required,Validators.pattern(VariablesConstants.USERNAME_PATTERN)])),
+          firstName: new FormControl({value: payload?.fullname.split(" ",1).pop(), disabled : true },Validators.compose([Validators.required,Validators.pattern(VariablesConstants.NAME_PATTERN)])), 
+          lastName: new FormControl({value: payload?.fullname.split(" ").pop(), disabled : true },Validators.compose([Validators.required,Validators.pattern(VariablesConstants.NAME_PATTERN)])), 
           email: new FormControl({value: payload?.email, disabled : true },[Validators.required, Validators.email]),
         });
      })
